@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>* It-Training *</title>
+</head>
+<body>
+
+<h1>It Training !</h1>
+
+
+<!-- Formulaire de recherche d'une formation (barre de recherche d'une formation) -->
+<form action="rechercheFormation.jsp" method="POST">
+
+	<table style="border : 2px solid green">
+		<tr>
+			<td>
+				<label for="chFormation">Trouver une formation à distance ou en présentiel !</label>
+			</td>
+		</tr>
+		
+		<tr>
+			<td>
+				<input type="text" id="chFormation" name="chFormation" placeholder="Thème, référence, mot clé...">
+			</td>
+		</tr>
+		
+		<tr>
+			<td>
+				<input type="submit" value="Rechercher !">
+			</td>
+		</tr>
+	
+	
+	</table>
+
+</form>
+
+<br />
+<br />
+
+
+<!-- Formulaire d'ajout d'une formation  -->
+<form action="ajouterUneFormation.jsp" method="POST">
+
+	<table style="border : 2px solid navy">
+	
+		<tr>
+			<td><label for="ajouter">Ajouter une formation !</label></td>
+		</tr>
+		
+		<tr>
+			<td><input type="text" id="ajouter"></td>
+		</tr>
+		
+		<tr>
+			<td><input type="submit" value="Ajouter !"></td>
+		</tr>
+	
+	</table>
+</form>
+
+<form action="updateFormation.jsp" method="POST">
+
+		<tr>
+			<td><label for="idFormation">Ajouter une formation !</label></td>
+		</tr>
+		<tr>
+			<td><input type="text" id="idFormation"></td>
+		</tr>
+		
+		<tr>
+			<td><input type="submit" value="Modifier la formation !"></td>
+		</tr>
+		
+</form>
+
+
+</body>
+</html>
