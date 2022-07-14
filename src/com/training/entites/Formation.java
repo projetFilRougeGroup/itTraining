@@ -29,7 +29,7 @@ public class Formation {
 			String publicFormation, String objectifsFormation, String detailsFormation, String chaptersFormation,
 			int dureeFormation, String domaineFormation) {
 		super();
-		this.idFormation = idFormation;
+		//this.idFormation = idFormation; ID is generated in the db, see @Id@GeneratedValue
 		this.nomFormation = nomFormation;
 		this.referenceFormation = referenceFormation;
 		this.prerequisFormation = prerequisFormation;
