@@ -25,21 +25,22 @@ public class Formation {
 	public Formation() {
 		
 	}
-	public Formation(long idFormation, String nomFormation, String referenceFormation, String prerequisFormation,
-			String publicFormation, String objectifsFormation, String detailsFormation, String chaptersFormation,
-			int dureeFormation, String domaineFormation) {
-		super();
-		//this.idFormation = idFormation; ID is generated in the db, see @Id@GeneratedValue
-		this.nomFormation = nomFormation;
-		this.referenceFormation = referenceFormation;
-		this.prerequisFormation = prerequisFormation;
-		this.publicFormation = publicFormation;
-		this.objectifsFormation = objectifsFormation;
-		this.detailsFormation = detailsFormation;
-		this.chaptersFormation = chaptersFormation;
-		this.dureeFormation = dureeFormation;
-		this.domaineFormation = domaineFormation;
-	}
+//idFormation; ID is generated in the db, see @Id@GeneratedValue
+//	public Formation(long idFormation, String nomFormation, String referenceFormation, String prerequisFormation,
+//			String publicFormation, String objectifsFormation, String detailsFormation, String chaptersFormation,
+//			int dureeFormation, String domaineFormation) {
+//		super();
+//		this.idFormation = 
+//		this.nomFormation = nomFormation;
+//		this.referenceFormation = referenceFormation;
+//		this.prerequisFormation = prerequisFormation;
+//		this.publicFormation = publicFormation;
+//		this.objectifsFormation = objectifsFormation;
+//		this.detailsFormation = detailsFormation;
+//		this.chaptersFormation = chaptersFormation;
+//		this.dureeFormation = dureeFormation;
+//		this.domaineFormation = domaineFormation;
+//	}
 	public Formation(String nomFormation, String referenceFormation, String prerequisFormation,
 			String publicFormation, String objectifsFormation, String detailsFormation, String chaptersFormation,
 			int dureeFormation, String domaineFormation) {
