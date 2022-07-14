@@ -11,9 +11,9 @@ http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
 		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 
 		<!-- Entités -->
-		<class>com.training.entities.Contact</class>
-		<class>com.training.entities.PhoneNumber</class>
-		<class>com.training.entities.Address</class>
+		<class>com.training.entities.Formation</class>
+		<class>com.training.entities.Themes</class>
+		<class>com.training.entities.PreRequis</class>
 
 		<properties>
 			<!-- Login -->
