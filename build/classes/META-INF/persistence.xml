@@ -11,9 +11,15 @@ http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
 		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 
 		<!-- Entités -->
-		<class>com.training.entities.Contact</class>
-		<class>com.training.entities.PhoneNumber</class>
-		<class>com.training.entities.Address</class>
+		<class>com.training.entities.Formation</class>
+		<class>com.training.entities.Theme</class>
+		<class>com.training.entities.PreRequis</class>
+		<class>com.training.entities.Enseignant</class>
+		<class>com.training.entities.Stagiaire</class>
+		<class>com.training.entities.Reservation</class>
+		<class>com.training.entities.Salle</class>
+		<class>com.training.entities.Session</class>
+		<class>com.training.entities.Evaluation</class>
 
 		<properties>
 			<!-- Login -->
