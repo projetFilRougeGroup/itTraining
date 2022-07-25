@@ -2,79 +2,61 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
+
+<link rel="stylesheet" type="text/css" href="css/index.css">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" type="text/css" href="css/rechercheFormation.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
 <title>* It-Training *</title>
 </head>
 <body>
 
-<h1>It Training !</h1>
+<h1>[ It Training ]</h1>
+<!-- Afficher tout les formations  -->
+<h2>Formation</h2>
+<form action="afficherLesFormations.jsp" method="POST">
 
-
-<!-- Formulaire de recherche d'une formation (barre de recherche d'une formation) -->
-<form action="rechercheFormation.jsp" method="POST">
-
-	<table style="border : 2px solid green">
-		<tr>
-			<td>
-				<label for="chFormation">Trouver une formation à distance ou en présentiel !</label>
-			</td>
-		</tr>
+	<input type="submit" value="Afficher tout les formations !">
 		
-		<tr>
-			<td>
-				<input type="text" id="chFormation" name="chFormation" placeholder="Thème, référence, mot clé...">
-			</td>
-		</tr>
-		
-		<tr>
-			<td>
-				<input type="submit" value="Rechercher !">
-			</td>
-		</tr>
-	
-	
-	</table>
-
 </form>
-
-<br />
-<br />
-
 
 <!-- Formulaire d'ajout d'une formation  -->
 <form action="ajouterUneFormation.jsp" method="POST">
 
-	<table style="border : 2px solid navy">
 	
-		<tr>
-			<td><label for="ajouter">Ajouter une formation !</label></td>
-		</tr>
+			<input type="submit" value="Ajouter une formation !">
 		
-		<tr>
-			<td><input type="text" id="ajouter"></td>
-		</tr>
-		
-		<tr>
-			<td><input type="submit" value="Ajouter !"></td>
-		</tr>
-	
-	</table>
 </form>
 
+<!-- Recherche une formation -->
+<form action="rechercheFormation.jsp" method="POST">
+	<input type="submit" value="Recherche une formation !">
+</form>
+
+<!-- Modification une formation -->
 <form action="updateFormation.jsp" method="POST">
-
-		<tr>
-			<td><label for="idFormation">Ajouter une formation !</label></td>
-		</tr>
-		<tr>
-			<td><input type="text" id="idFormation"></td>
-		</tr>
-		
-		<tr>
-			<td><input type="submit" value="Modifier la formation !"></td>
-		</tr>
-		
+	<input type="submit" value="Modifier une formation !">
 </form>
 
+<!-- Suppression d'une formation -->
+<form action="deleteFormation.jsp" method="POST">
+	<input type="submit" value="Supprimer une formation !">
+</form>
+<h2>Prérequis</h2>
+<!-- Formulaire d'ajout d'une formation  -->
+<form action="prerequis.jsp" method="POST">
+
+			<input type="submit" value="Prérequis !">
+		
+</form>
+<h2>Session</h2>
+<!-- Formulaire d'ajout d'une formation  -->
+<form action="session.jsp" method="POST">
+
+			<input type="submit" value="Session !">
+		
+</form>
 
 </body>
 </html>

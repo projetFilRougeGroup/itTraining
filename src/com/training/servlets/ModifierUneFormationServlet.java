@@ -37,8 +37,7 @@ public class ModifierUneFormationServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		//doGet(request, response);
+		
 		long idFormation = Long.parseLong(request.getParameter("idFormation"));
 		String nomFormation = request.getParameter("nomFormation");
 		String referenceFormation = request.getParameter("referenceFormation");
@@ -57,9 +56,7 @@ public class ModifierUneFormationServlet extends HttpServlet {
 		ServiceFormation sf = new ServiceFormation();
 		sf.modifierFormation(idFormation,referenceFormation,nomFormation , prerequisFormation, publicFormation,objectifsFormation, detailsFormation, chaptersFormation, priceFormation, dureeFormation, domaineFormation);
 		
-		response.sendRedirect("index.html");
-		
-		
+		response.sendRedirect("index.html");	
 		
 	}
 

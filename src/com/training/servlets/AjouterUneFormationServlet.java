@@ -49,17 +49,18 @@ public class AjouterUneFormationServlet extends HttpServlet {
 		String detailsFormation = request.getParameter("detailsFormation");
 		
 		String chaptersFormation = request.getParameter("chaptersFormation");
+		int priceFormation = Integer.parseInt(request.getParameter("priceFormation"));
 		int dureeFormation =Integer.parseInt(request.getParameter("dureeFormation"));
 		String domaineFormation = request.getParameter("domaineFormation");
 		
-		
 		ServiceFormation SF = new ServiceFormation();
 		
-		SF.addFormation(nomFormation, referenceFormation, prerequisFormation, publicFormation, objectifsFormation, detailsFormation, chaptersFormation, dureeFormation, domaineFormation);
+		SF.addFormation(nomFormation, referenceFormation, prerequisFormation, publicFormation, objectifsFormation, detailsFormation, chaptersFormation,priceFormation, dureeFormation, domaineFormation);
 		//System.out.println("coco !!");
 		//RequestDispatcher rd = request.getRequestDispatcher("ajouterUneFormation.jsp");
 		//rd.forward(request, response);
 		response.sendRedirect("index.html");
+		
 	}
 
 }

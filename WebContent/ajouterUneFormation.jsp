@@ -4,19 +4,21 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" type="text/css" href="css/rechercheFormation.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+
 <title>Add Formation</title>
 </head>
 <body>
 
 	<form action="AjouterUneFormationServlet" method="POST">
 	
-		<table style="border: 2px solid green">
+		<table>
 			<caption>L'ajout/création d'une formation</caption>
 			
-			<tr>
-			    <td>Id de la formation</td>
-			    <td><input name="idFormation" type="text"/></td>
-			</tr>
+			
 			<tr>
 			    <td>Référence de la formation</td>
 			    <td><input name="referenceFormation" type="text"/></td>
@@ -67,8 +69,8 @@
 			</tr>
 			
 			<tr>
-			    <td></td>
-			    <td><input type="submit" value="Envoyer !"/></td>
+			    <td><input type="submit" value="Ajouter !"/></td>
+			    <td><input type="reset" value="Annuler" /></td>
 			</tr>
 		</table>
 	
