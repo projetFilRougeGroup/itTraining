@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1"
+	xmlns="http://xmlns.jcp.org/xml/ns/persistence"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence  
+http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+	<!-- Unité de persistance -->
+	<persistence-unit name="projetITTRAINING"
+		transaction-type="RESOURCE_LOCAL">
+		<!-- Provider -->
+		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+
+		<!-- Entités -->
+		<class>com.training.entites.Formation</class>
+		<class>com.training.entites.Prerequis</class>
+		<class>com.training.entites.Session</class>
+		<class>com.training.entites.Reservation</class>
+		<class>com.training.entites.Salle</class>
+		<class>com.training.entites.Stagiaire</class>
+		<class>com.training.entites.Theme</class>
+		<class>com.training.entites.Enseignant</class>
+		
+
+		<properties>
+			<!-- Login -->
+			<property name="javax.persistence.jdbc.user" value="root" />
+			<!-- mot de passe -->
+			<property name="javax.persistence.jdbc.password"
+				value="root" />
+
+			<!-- Driver jdbc -->
+			<property name="javax.persistence.jdbc.driver"
+				value="com.mysql.jdbc.Driver" />
+
+			<!-- URL de la base de données -->
+			 <property name="javax.persistence.jdbc.url"
+				value="jdbc:mysql://localhost:3306/ITTRAINING" /> 
+				
+				
+
+			<!-- configuration de la création du schema de la BD -->
+			  <property
+				name="javax.persistence.schema-generation.database.action"
+				value="create" />  
+			<property
+				name="javax.persistence.schema-generation.create-source"
+				value="metadata" />
+			<property
+				name="javax.persistence.schema-generation.drop-source"
+				value="script" />
+			<property
+				name="javax.persistence.schema-generation.drop-script-source"
+				value="META-INF/drop.sql" />
+
+
+			<property name="hibernate.show_sql" value="true" />
+			<property name="hibernate.format_sql" value="true" />
+		</properties>
+	</persistence-unit>
+</persistence>
