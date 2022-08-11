@@ -45,9 +45,9 @@ http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
 			<property
 				name="javax.persistence.schema-generation.create-source"
 				value="metadata" />
-			<property 
+<!-- 			<property 
 				name="javax.persistence.sql-load-script-source"
-				value="META-INF/sql/data.sql"/>  	
+				value="META-INF/sql/data.sql"/>   -->	
 			<property
 				name="javax.persistence.schema-generation.drop-source"
 				value="script" />
