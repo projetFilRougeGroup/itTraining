@@ -7,9 +7,11 @@ import java.util.stream.Collectors;
 
 import org.jboss.logging.Logger;
 
+import com.training.daos.DAOEnseignant;
 import com.training.daos.DAOFormation;
 import com.training.daos.DAOPrerequis;
 import com.training.daos.DAOStagiaire;
+import com.training.entites.Enseignant;
 import com.training.entites.Formation;
 import com.training.entites.Prerequis;
 import com.training.entites.Stagiaire;
@@ -23,7 +25,7 @@ public class ServiceFormation {
 	{
 		DAOFormation df = new DAOFormation();
 		df.addFormation(nomFormation, referenceFormation, publicFormation, objectifsFormation, detailsFormation, chaptersFormation,priceFormation, dureeFormation);
-		System.out.println("la formation à été bien ajouter !");
+		logger.info("la formation à été bien ajouter !");
 	}
 	
 	public List<Formation> rechercheFormation(String keyWord) {
@@ -46,14 +48,14 @@ public class ServiceFormation {
 	{
 		DAOFormation df = new DAOFormation();
 		df.modifyFormation(idFormation, referenceFormation,nomFormation, publicFormation, objectifsFormation, detailsFormation, chaptersFormation, priceFormation, dureeFormation);
-		System.out.println("la formation à été bien modifier");
+		logger.info("la formation à été bien modifier");
 	}
 	
 	public void supprimerFormation(long idFormation)
 	{
 		DAOFormation df = new DAOFormation();
 		df.deleteFormation(idFormation);
-		System.out.println(" la formation à bien été supprimer");
+		logger.info(" la formation à bien été supprimer");
 	}
 	public void addPrerequis(String descriptionPrerequis, String quizz ) {
 		
@@ -80,14 +82,14 @@ public class ServiceFormation {
 	{
 		DAOFormation df = new DAOFormation();
 		df.modifyPrerequis(idPrerequis, descriptionPrerequis,quizz);
-		System.out.println("le prérequis à été bien modifier");
+		logger.info("le prérequis à été bien modifier");
 	}
 
 	public void addStagiaire(String nomStagiaire, String prenomStagiaire, String emailStagiaire, String telStagiaire,
 			String adresseStagiaire) {
 		DAOStagiaire df = new DAOStagiaire();
 		df.addStagiaire(nomStagiaire, prenomStagiaire, emailStagiaire, telStagiaire, adresseStagiaire);
-		System.out.println("le stagiaire à été bien ajouter !");
+		logger.info("le stagiaire à été bien ajouter !");
 		
 	}
 
@@ -103,7 +105,7 @@ public class ServiceFormation {
 			String emailStagiaire, String adresseStagiaire) {
 			DAOStagiaire ds = new DAOStagiaire();
 			ds.modifyStagiaire(idStagiaire, nomStagiaire,prenomStagiaire,telStagiaire, emailStagiaire,adresseStagiaire);
-			System.out.println("le stagiaire à été bien modifier");
+			logger.info("le stagiaire à été bien modifier");
 		
 	}
 
@@ -112,6 +114,38 @@ public class ServiceFormation {
 		DAOStagiaire ds = new DAOStagiaire();
 		ds.deleteStalgiaire(idStagiaire);
 		logger.info("le stagiaire à été bien supprimer");
+		
+	}
+
+	public List<Enseignant> rechercheEnseignant(String keyWord) {
+		DAOEnseignant de = new DAOEnseignant();
+		List<Enseignant> lEnseignant = de.getAllEnseignant();
+		List<Enseignant> result = lEnseignant.stream().filter(f -> ((f.getNomEnseignant()).toLowerCase()).contains(keyWord.toLowerCase()) || ((f.getPrenomEnseignant()).toLowerCase()).contains(keyWord.toLowerCase()) || ((f.getTelEnseignant()).toLowerCase()).contains(keyWord.toLowerCase()) || ((f.getEmailEnseignant()).toLowerCase()).contains(keyWord.toLowerCase()) || ((f.getAdresseEnseignant()).toLowerCase()).contains(keyWord.toLowerCase())).collect(Collectors.toList());
+		logger.debug("Nombre d'enseignant trouvé avec le mot clé "+keyWord+" : "+result.size());
+		return result;
+	}
+
+	public void addEnseignant(String nomEnseignant, String prenomEnseignant, String emailEnseignant,
+			String telEnseignant, String adresseEnseignant) {
+		DAOEnseignant de = new DAOEnseignant();
+		de.addEnseignant(nomEnseignant, prenomEnseignant, emailEnseignant, telEnseignant, adresseEnseignant);
+		logger.info("L'enseignant à été bien ajouté");
+		
+	}
+
+	public void modifierEnseignant(long idEnseignant, String nomEnseignant, String prenomEnseignant,
+			String telEnseignant, String emailEnseignant, String adresseEnseignant) {
+		
+		DAOEnseignant de = new DAOEnseignant();
+		de.modifierEnseignant(idEnseignant,nomEnseignant, prenomEnseignant, emailEnseignant, telEnseignant, adresseEnseignant);
+		logger.info("L'enseignant à été modifier !" );
+	}
+
+	public void supprimerEnseignant(long idEnseignant) {
+		
+		DAOEnseignant de = new DAOEnseignant();
+		de.deleteEnseignant(idEnseignant);
+		logger.info("l'enseignant à été bien supprimer");
 		
 	}
 }

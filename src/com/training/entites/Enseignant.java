@@ -25,6 +25,10 @@ public class Enseignant {
 	@OneToMany (cascade=CascadeType.PERSIST,mappedBy="enseignant")
 	private Set<Session> sessions = new HashSet<Session>();
 	
+//	@OneToMany (cascade=CascadeType.PERSIST,mappedBy="enseignant")
+//	private Set<Formation> Certifications = new HashSet<Formation>();
+	
+	
 	public Enseignant() {
 		
 	}
@@ -72,8 +76,6 @@ public class Enseignant {
 	public void setEmailEnseignant(String emailEnseignant) {
 		this.emailEnseignant = emailEnseignant;
 	}
-	
-	
 	public String getTelEnseignant() {
 		return telEnseignant;
 	}
@@ -96,7 +98,8 @@ public class Enseignant {
 	public String toString() {
 		return "Enseignant [idEnseignant=" + idEnseignant + ", nomEnseignant=" + nomEnseignant + ", prenomEnseignant="
 				+ prenomEnseignant + ", emailEnseignant=" + emailEnseignant + ", telEnseignant=" + telEnseignant
-				+ ", adresseEnseignant=" + adresseEnseignant + ", sessions=" + sessions + "]";
+				+ ", adresseEnseignant=" + adresseEnseignant + ", sessions=" + sessions + ", Certifications=]";
 	}
+	
 	
 }
