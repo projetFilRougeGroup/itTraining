@@ -1,7 +1,10 @@
 package com.training.servlets;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,15 +12,20 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.jboss.logging.Logger;
+
+import com.training.entites.Formation;
 import com.training.services.ServiceFormation;
+
+
 
 /**
  * Servlet implementation class AjouterUneSessionServlet
  */
 @WebServlet("/AjouterUneSessionServlet")
 public class AjouterUneSessionServlet extends HttpServlet {
-	private static final long serialVersionUID = 1L;
-       
+	private static final long serialVersionUID = 2L;
+	private static Logger logger = Logger.getLogger(AjouterUneSessionServlet.class);         
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -38,15 +46,50 @@ public class AjouterUneSessionServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		boolean failure=false;
+		String messagefailure= "";
+		// necessaire
+		Long id = Long.parseLong(request.getParameter("ID_Formation"));
+
+		//optionnels
+		Date dateDebut = null;
+		Date dateFin = null;
+		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
+
+		// example : String dateInString = "7-Jun-2013";
+		try {
+				dateDebut = formatter.parse(request.getParameter("dateDebut"));
+			} catch (Exception e) {
+				messagefailure +="date début incompatible dd-MM-yyyy ";
+			failure=true;
+			};
+
+		try {
+		dateFin = formatter.parse(request.getParameter("dateFin"));
+		} catch (Exception e) {
+			messagefailure +="date fin incompatible dd-MM-yyyy ";
+			failure=true;
+		};		
+		float prixsession =Float.parseFloat(request.getParameter("prixsession"));
+
+		logger.info("test pre recherche formation.");
+		ServiceFormation SF = new ServiceFormation();
+		logger.info("test pre recherche formationstep2.");
+		boolean formationexiste= SF.CheckFormation(id);
+		if (!formationexiste) {
+			failure=true;
+			messagefailure +="Pas de formation trouvée";
+		}
 		
-//		
-//		String dateDebutSession = request.getParameter("dateDebutSession");
-//		Date dateFinSession = request.getParameter("dateFinSession");
 		
-//		ServiceFormation sf = new ServiceFormation();
-		//sf.addPrerequis(dateDebutSession, dateFinSession);
-		
-		response.sendRedirect("index.html");
+		if (failure) {
+			logger.error(messagefailure);
+		} else {
+			logger.info("formation valide. proceed with session creation");
+			SF.addSession( id,  dateDebut,  dateFin,  prixsession);
+			}	
+		response.sendRedirect("ajouterUneSession.jsp");
+		}
 	}
 
-}
+

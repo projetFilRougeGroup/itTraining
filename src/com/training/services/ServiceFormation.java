@@ -2,6 +2,7 @@ package com.training.services;
 
 
 
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -10,11 +11,14 @@ import org.jboss.logging.Logger;
 import com.training.daos.DAOEnseignant;
 import com.training.daos.DAOFormation;
 import com.training.daos.DAOPrerequis;
+import com.training.daos.DAOSession;
 import com.training.daos.DAOStagiaire;
 import com.training.entites.Enseignant;
 import com.training.entites.Formation;
 import com.training.entites.Prerequis;
+import com.training.entites.Session;
 import com.training.entites.Stagiaire;
+import com.training.entites.Theme;
 
 public class ServiceFormation {
 	
@@ -27,7 +31,27 @@ public class ServiceFormation {
 		df.addFormation(nomFormation, referenceFormation, publicFormation, objectifsFormation, detailsFormation, chaptersFormation,priceFormation, dureeFormation);
 		logger.info("la formation à été bien ajouter !");
 	}
-	
+	public Formation getFormation(Long id) {
+		
+		DAOFormation df = new DAOFormation();
+		Formation formation = df.getFormation(id);
+		logger.debug("Formation "+ formation.getNomFormation() + " trouvée");
+
+		return formation;
+		
+	}
+	public boolean CheckFormation(Long id) {
+		boolean success=false;
+		
+		DAOFormation df = new DAOFormation();
+		Formation formation = df.getFormation(id);
+
+		
+		if (!formation.equals(null)) {
+			logger.debug("Formation "+ formation.getNomFormation() + " trouvée");
+			success=true;}
+		return success;
+	}	
 	public List<Formation> rechercheFormation(String keyWord) {
 		DAOFormation df = new DAOFormation();
 		List<Formation> lForamtion = df.getAllFormation();
@@ -84,7 +108,43 @@ public class ServiceFormation {
 		df.modifyPrerequis(idPrerequis, descriptionPrerequis,quizz);
 		logger.info("le prérequis à été bien modifier");
 	}
-
+	public void addTheme(String nomTheme) 
+	{
+		DAOFormation df = new DAOFormation();
+		df.addTheme(nomTheme);
+		logger.info("Ajout d'un theme isolé !");
+	}
+	
+	public List<Theme> rechercheTheme(String keyWord) {
+		DAOFormation df = new DAOFormation();
+		List<Theme> lTheme = df.getAllTheme();
+		//List<Theme> result = lTheme.stream().filter(f -> f.getNomTheme().contains(keyWord) || f.getReferenceTheme().contains(keyWord) || f.getDetailsTheme().contains(keyWord) || f.getChaptersTheme().contains(keyWord) || f.getDomaineTheme().contains(keyWord) || f.getObjectifsTheme().contains(keyWord) || f.getPrerequisTheme().getDescriptionPrerequis().contains(keyWord) || f.getPublicTheme().contains(keyWord)).collect(Collectors.toList());
+		logger.info("Nombre de Theme trouvé avec le mot clé " + keyWord + " : " + lTheme.size());
+		return lTheme;
+		
+	}
+	
+	public List<Theme> afficherTousLesThemes(){
+		DAOFormation df = new DAOFormation();
+		List<Theme> lTheme=df.getAllTheme();
+		logger.info(lTheme);
+		return lTheme;
+	}
+	
+	public void modifierTheme(Theme theme)
+	{
+		
+		DAOFormation df = new DAOFormation();
+		df.UpdateTheme(theme);
+		logger.info("le Theme à été modifié");
+	}
+	
+	public void supprimerTheme(long idTheme)
+	{
+		DAOFormation df = new DAOFormation();
+		df.deleteTheme(idTheme);
+		logger.info("le Theme à été supprimé");
+	}
 	public void addStagiaire(String nomStagiaire, String prenomStagiaire, String emailStagiaire, String telStagiaire,
 			String adresseStagiaire) {
 		DAOStagiaire df = new DAOStagiaire();
@@ -147,5 +207,79 @@ public class ServiceFormation {
 		de.deleteEnseignant(idEnseignant);
 		logger.info("l'enseignant à été bien supprimer");
 		
+	}
+	
+	
+	public void addSession(Session session) 
+	{
+		DAOSession ds = new DAOSession();
+		 ds.addSession(session);
+		logger.info("Ajout d'une Session pour une formation!");
+
+	}
+	public void addSession(Long idFormation, Date debut, Date fin, float price) 
+	{
+		DAOSession ds = new DAOSession();
+		ServiceFormation SF = new ServiceFormation();
+		Formation formation = SF.getFormation(idFormation);
+		
+		Session session = new Session();
+
+		session.setPrice(price);
+		session.setDateDebutSession(debut);
+		session.setDateFinSession(fin);
+		
+		session.setFormation(formation);
+		formation.getSessions().add(session);
+		
+
+		 ds.addSession(session);
+		logger.info("Ajout d'une Session pour une formation!");
+
+	}	
+	public Session afficherUneSession(Long idSession){
+		DAOSession ds = new DAOSession();
+		Session session=ds.getSession(idSession);
+		logger.info(session);
+		return session;
+	}	
+	
+	public List<Session> AfficherLesSessions() {
+		DAOSession ds = new DAOSession();
+		List<Session> lSession = ds.getAllSessions();
+		return lSession;
+	}	
+
+	public List<Session> rechercheSession(String keyWord) {
+		DAOSession ds = new DAOSession();
+		List<Session> lSession = ds.getAllSessions();
+//		List<Formation> result = lFormation.stream().filter(f -> ((f.getNomFormation()).toLowerCase()).contains(keyWord.toLowerCase()) ||
+		List<Session> result = lSession.stream().filter(f -> 
+				((f.getDateDebutSession()).toString().toLowerCase()).contains(keyWord.toLowerCase()) ||
+				((f.getDateFinSession()).toString().toLowerCase()).contains(keyWord.toLowerCase()) ||
+				((String.valueOf(f.getPrice())).toLowerCase()).contains(keyWord.toLowerCase()) ||
+				((f.getEnseignant().getNomEnseignant()).toLowerCase()).contains(keyWord.toLowerCase()) ||
+				((f.getEnseignant().getPrenomEnseignant()).toLowerCase()).contains(keyWord.toLowerCase()) 
+//				||
+//				((f.g()).toLowerCase()).contains(keyWord.toLowerCase()) ||
+//				((f.getPublicFormation()).toLowerCase()).contains(keyWord.toLowerCase())
+				).collect(Collectors.toList());
+		logger.debug("Nombre de formation trouvé avec le mot clé " + keyWord + " : " + result.size());
+		return result;
+	}
+	
+	public void modifierSession(Session Session)
+	{
+		
+		DAOSession ds = new DAOSession();
+		ds.UpdateSession(Session);
+		logger.info("le Session à été modifié");
+	}
+	
+	public void supprimerSession(long idSession)
+	{
+		DAOSession ds = new DAOSession();
+		ds.deleteSession(idSession);
+		logger.info("le Session à été supprimé");
 	}
 }

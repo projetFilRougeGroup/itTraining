@@ -14,56 +14,50 @@
 <link rel="stylesheet" type="text/css" href="css/rechercheFormation.css">
 <link rel="stylesheet" type="text/css" href="css/tableaux.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
-<title>Afficher toutes les formations</title>
+<title>Afficher et gérer les Sessions</title>
 </head>
 <body>
 
-
-
-
-	<form action="AfficherToutLesFormationsServlet" method="POST">
+	<form action="AfficherToutesLesSessionsServlet" method="GET">
 		
 			
 				    <label for="affich">
-				   Afficher toutes les formations à distance ou en présentiel !
+				   Afficher vos sessions!
 				    </label>
 				    <input type="submit" value="Afficher !"/>
 	</form>
 	<br />
-	<c:forEach var="workload" items="${resultRechercheFormation}">
+	<c:forEach var="workload" items="${resultRechercheSession}">
 	
 				<table>
 		            <tr> 
 		            
-		            	<td>id Formation</td>
-		                <td >Nom Formation</td>
-		                <td>Référence</td>
+		            	<td>id Session</td>
+		                <td>Date Début Session</td>
+						<td>Date Fin Session</td>
+		                <td>Prix</td>
 		                
-		                <td >Public</td>
-		                <td>Objectifs</td>
-		                <td >Détails</td>
-		                <td>Chapters</td>
-		                <td >Prix</td>
-		                <td >Durée</td>
-		                
-		                <td>Action</td>
+		                <td>IdFormation</td>
+		                <td>IdEnseignant</td>
+		                <td>liste Stagiaires inscrits</td>
+		                <td>liste Salles réservées</td>
 		             
 		            </tr>
 		            <tr>
-			            <td>${workload.idFormation}</td>
-			            <td>${workload.nomFormation}</td>
-			            <td>${workload.referenceFormation}</td>
-			           
-			            <td>${workload.publicFormation}</td>
-			            <td>${workload.objectifsFormation}</td>
-			            <td>${workload.detailsFormation}</td>
-			            <td>${workload.chaptersFormation}</td>
-			            <td>${workload.priceFormation}</td>
-			            <td>${workload.dureeFormation}</td>
+			            <td>${workload.idSession}</td>
+			            <td>${workload.dateDebutSession}</td>
+			            <td>${workload.dateDebutSession}</td>
+						<td>${workload.priceSession}</td>	           
+						
+			            <td>${workload.IdFormation}</td>
+			            <td>${workload.IdEnseignant}</td>
+						
+			            <td>${workload.listeStagiairesInscrits}</td>
+			            <td>${workload.listeSallesReservees}</td>
 			           
 			            <td>
 			            
-			            <form action="ModifierUneFormationServlet" method="POST">
+			            <form action="ModifierUneSessionServlet" method="POST">
 			            		
 			            		
 			            		<button type="submit">
@@ -72,7 +66,7 @@
 			            		
 			            	</form>
 			            
-			            	<form action="SupprimerUneFormationServlet" method="POST">
+			            	<form action="SupprimerUneSessionServlet" method="POST">
 			            		
 			            	 <button type="submit">
 			            		<img src="images/delete.png" style="width: 35px; cursor:pointer" alt="Supprimer !" title="Supprimer !"/>
