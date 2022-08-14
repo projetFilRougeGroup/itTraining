@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Stagiaire {
@@ -21,7 +22,7 @@ public class Stagiaire {
 	private String telStagiaire;
 	private String adresseStagiaire;
 	
-	@ManyToMany (cascade=CascadeType.PERSIST,mappedBy="stagiaires")
+	@OneToMany (cascade=CascadeType.PERSIST)
 	private Set<Session> sessions = new HashSet<Session>();
 	
 	public Stagiaire() {

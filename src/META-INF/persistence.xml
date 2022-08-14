@@ -41,13 +41,13 @@ http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
 			<!-- configuration de la création du schema de la BD -->
 			  <property
 				name="javax.persistence.schema-generation.database.action"
-				value="create" />  
+								value="drop-and-create" />  
 			<property
 				name="javax.persistence.schema-generation.create-source"
 				value="metadata" />
-<!-- 			<property 
+ 			<property 
 				name="javax.persistence.sql-load-script-source"
-				value="META-INF/sql/data.sql"/>   -->	
+				value="META-INF/sql/data.sql"/>   	
 			<property
 				name="javax.persistence.schema-generation.drop-source"
 				value="script" />

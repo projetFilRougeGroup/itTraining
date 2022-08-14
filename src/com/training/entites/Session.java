@@ -9,8 +9,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+//import javax.persistence.JoinTable;
+//import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
@@ -22,6 +22,9 @@ public class Session {
 	private Date dateDebutSession;
 	private Date dateFinSession;
 	private float price;
+//	private int nb_mini;
+//	private int nb_max;
+// 	private Lieux lieu_session //(dont distancielle), la session est créée pour un lieu, la résa salle doit suivre
 	
 	@ManyToOne
 	@JoinColumn(name="idFormation")
@@ -31,11 +34,8 @@ public class Session {
 	@JoinColumn(name="idEnseignant")
 	private Enseignant enseignant;
 	
-	@ManyToMany (cascade=CascadeType.PERSIST,mappedBy="")
-	@JoinTable(name="SessionsFormations",
-		joinColumns=@JoinColumn(name="idSession"),
-		inverseJoinColumns=@JoinColumn(name="idStagiaire"))
-	private Set<Stagiaire>	stagiaires = new HashSet<Stagiaire>();
+	@OneToMany (cascade=CascadeType.PERSIST)
+	private Set<Stagiaire>	stagiaires;;
 	
 	@OneToMany (cascade=CascadeType.PERSIST, mappedBy="idReservation")
 	private Set<Reservation> reservations = new HashSet<Reservation>();
