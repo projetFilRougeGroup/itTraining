@@ -203,6 +203,20 @@ public class DAOFormation {
 			
 		return true;
 	}
+
+	public boolean modifyFormation(Formation formation) {
+		
+		EntityManager em = JpaUtil.getEmf().createEntityManager();
+		EntityTransaction tx = em.getTransaction();
+		tx.begin();
+
+		em.merge(formation);
+		
+		tx.commit();
+		em.close();
+			
+		return true;
+	}	
 	
 	public boolean modifyPrerequis(long idFormation, String descriptionPrerequis,String quizz) {
 		
@@ -267,12 +281,12 @@ public class DAOFormation {
 
 
 
-	public boolean addTheme(Theme theme) { 
-		//, Theme supertheme, Set<Theme> sousthemes) {
+	public boolean addTheme(Theme theme) {
 		
 		boolean success=false;
 		try {
 			EntityManager em=JpaUtil.getEmf().createEntityManager();
+
 			EntityTransaction tx =  em.getTransaction();
 			tx.begin();
 
@@ -315,9 +329,13 @@ public class DAOFormation {
 
 
 
-	public List<Theme> getTheme(long idTheme) {
-		// TODO Auto-generated method stub
-		return null;
+	public Theme getTheme(long idTheme) {
+		EntityManager em = JpaUtil.getEmf().createEntityManager();
+
+		Theme theme = em.find( Theme.class, idTheme);
+
+		em.close();
+		return theme;
 	}
 
 

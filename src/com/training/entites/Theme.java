@@ -9,9 +9,11 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Theme {
@@ -20,11 +22,14 @@ public class Theme {
 	private long idTheme;
 	
 	private String nomTheme;
-	
-//	@ManyToOne(fetch = FetchType.LAZY)
-//	private Theme supertheme = new Theme();
 
-	
+	@ManyToOne(cascade={CascadeType.ALL})
+	@JoinColumn(name="idSupertheme")
+	private Theme supertheme;
+
+	@OneToMany(mappedBy="supertheme")
+	private Set<Theme> soustheme;// = new HashSet<Employee>();
+
 	@ManyToMany (cascade=CascadeType.PERSIST)
 	private Set<Formation> formation = new HashSet<Formation>();
 	
@@ -61,13 +66,21 @@ public class Theme {
 		this.nomTheme = nomTheme;
 	}
 
-//	public Theme getSupertheme() {
-//		return supertheme;
-//	}
-//
-//	public void setSupertheme(Theme supertheme) {
-//		this.supertheme = supertheme;
-//	}
+	public Theme getSupertheme() {
+		return supertheme;
+	}
+
+	public void setSupertheme(Theme supertheme) {
+		this.supertheme = supertheme;
+		supertheme.getSoustheme().add(this);
+	}
+	public Set<Theme> getSoustheme() {
+		return soustheme;
+	}
+
+	public void setSoustheme(Set<Theme> soustheme) {
+		this.soustheme = soustheme;
+	}
 
 	public Set<Formation> getFormation() {
 		return formation;

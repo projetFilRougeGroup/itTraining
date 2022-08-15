@@ -35,8 +35,6 @@ public class ServiceFormation {
 		
 		DAOFormation df = new DAOFormation();
 		Formation formation = df.getFormation(id);
-		logger.debug("Formation "+ formation.getNomFormation() + " trouvée");
-
 		return formation;
 		
 	}
@@ -71,10 +69,30 @@ public class ServiceFormation {
 	public void modifierFormation(long idFormation, String referenceFormation,String nomFormation, String publicFormation, String objectifsFormation, String detailsFormation, String chaptersFormation, int priceFormation, int dureeFormation)
 	{
 		DAOFormation df = new DAOFormation();
-		df.modifyFormation(idFormation, referenceFormation,nomFormation, publicFormation, objectifsFormation, detailsFormation, chaptersFormation, priceFormation, dureeFormation);
-		logger.info("la formation à été bien modifier");
+		
+		Formation formation = df.getFormation(idFormation);
+		
+		formation.setReferenceFormation(referenceFormation);
+		formation.setNomFormation(nomFormation);
+		
+		formation.setPublicFormation(publicFormation);
+		formation.setObjectifsFormation(objectifsFormation);
+		formation.setDetailsFormation(detailsFormation);
+
+		formation.setChaptersFormation(chaptersFormation);
+		
+		formation.setDureeFormation(dureeFormation);
+		formation.setPriceFormation(priceFormation);
+
+					
+		df.modifyFormation(formation);
 	}
-	
+	public void modifierFormation(Formation formation)
+	{
+		DAOFormation df = new DAOFormation();
+		df.modifyFormation(formation);
+		logger.info("la formation à été bien modifier");
+	}	
 	public void supprimerFormation(long idFormation)
 	{
 		DAOFormation df = new DAOFormation();
@@ -94,7 +112,12 @@ public class ServiceFormation {
 		logger.debug(lPrerequis);
 		return lPrerequis;
 	}
+	public Prerequis GetPrerequis( Long IdPrerequis){
+		DAOPrerequis dp = new DAOPrerequis();
+		Prerequis prerequis=dp.getPrerequis(IdPrerequis);
 
+		return prerequis;
+	}	
 	public void supprimerPrerequis(long idPrerequis) {
 		DAOPrerequis dp = new DAOPrerequis();
 		dp.deletePrerequis(idPrerequis);
@@ -110,9 +133,25 @@ public class ServiceFormation {
 	}
 	public void addTheme(String nomTheme) 
 	{
-		DAOFormation df = new DAOFormation();
-		df.addTheme(nomTheme);
+		Theme theme = new Theme(nomTheme);
+		addTheme(theme);
 		logger.info("Ajout d'un theme isolé !");
+	}
+
+	public void addTheme(String nomTheme, long IdSupertheme) 
+	{
+		DAOFormation df = new DAOFormation();
+		Theme theme = new Theme(nomTheme);
+		Theme supertheme = df.getTheme(IdSupertheme);
+		theme.setSupertheme(supertheme);
+		addTheme(theme);
+		logger.info("Ajout d'un theme avec supertheme !");
+	}	
+	public void addTheme(Theme theme) 
+	{
+		DAOFormation df = new DAOFormation();
+		df.addTheme(theme);
+		logger.info("Ajout d'un theme !");
 	}
 	
 	public List<Theme> rechercheTheme(String keyWord) {
@@ -131,7 +170,14 @@ public class ServiceFormation {
 		return lTheme;
 	}
 	
-	public void modifierTheme(Theme theme)
+	public Theme GetTheme( Long IdTheme){
+		DAOFormation df = new DAOFormation();
+		Theme theme=df.getTheme(IdTheme);
+
+		return theme;
+	}	
+	
+	public void modifierTheme(Theme theme) // version avec param
 	{
 		
 		DAOFormation df = new DAOFormation();
