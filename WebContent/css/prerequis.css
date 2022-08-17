@@ -1,0 +1,7 @@
+@charset "UTF-8";
+
+img {
+	display:flex;
+	background-repeat:no-repeat;
+	width: 20px;
+}
