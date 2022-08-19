@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd">
+        
+<!--   
+   <context:component-scan base-package="com.lip6.services.*" />
+    <context:annotation-config/> -->
+<aop:config>
+<aop:aspect id="infotologaspect" ref="infots">
+<aop:around
+	pointcut="execution(* infoToString())"
+	method="log" arg-names="pjp" />
+<!-- pour exemple quand params : arg-names="zipcode,adress"  --> 
+</aop:aspect>
+</aop:config>
+
+<!-- <bean id="infots" class="com.lip6.aop.AopTester"/>
+
+<bean id="cdao" class="com.lip6.daos.DAOContact"/> 
+
+<bean id="cservice" class="com.lip6.services.ServiceContact"/> 
+
+<bean id="curlang" class="com.lip6.messages.CurrentLocale">
+ 	<property name="language" value = "EN" />
+	<property name="country" value = "US" />
+</bean>
+
+<bean id="contact_p" class="com.lip6.entities.Contact" scope="prototype">
+	<property name="firstName" value = "" />
+	<property name="lastName" value = "" />
+	<property name="email" value = "" />
+	<property name="adress">
+			<ref bean="adresse_p"/>
+	</property>
+	<property name="listpn">
+		<set>
+			<ref bean="phone_bean1"/>
+			<ref bean="phone_bean2"/>
+		</set>
+	</property>
+</bean> 
+
+<bean id="contact_q" class="com.lip6.entities.Contact" scope="prototype">
+<constructor-arg type="String"><value>prénom</value></constructor-arg>
+<constructor-arg type="String"><value>nom de famille</value></constructor-arg>
+<constructor-arg type="String"><value>email@email</value></constructor-arg>
+  	<property name="adress">
+			<ref bean="adresse_p"/>
+	</property>
+</bean> 
+
+
+<bean id="adresse_p" class="com.lip6.entities.Adress" scope="prototype">
+	<property name="street"		value ="street_test" />
+	<property name="city"		value ="city_test" />
+	<property name="zip"		value ="zip_test" />
+	<property name="country"	value ="country_test" />
+		<property name="contact" >
+			<ref bean="contact_p"/>
+		</property>	
+</bean> 
+
+<bean id="phone_bean1" class="com.lip6.entities.PhoneNumber" scope="prototype">
+	<property name="countryCode"	value ="countrycode_test" />
+	<property name="number"			value ="1234567890" />
+		<property name="contact">
+			<ref bean="contact_p"/>
+		</property>
+</bean>
+
+<bean id="phone_bean2" class="com.lip6.entities.PhoneNumber" scope="prototype">
+	<property name="number"			value ="0987654321" />
+	<property name="contact">
+			<ref bean="contact_p"/>
+	</property>
+</bean> -->
+
+</beans>
+

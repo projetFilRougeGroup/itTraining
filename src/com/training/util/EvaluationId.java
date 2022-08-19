@@ -4,8 +4,9 @@ import java.io.Serializable;
 
 public class EvaluationId  implements Serializable {
 
+	private static final long serialVersionUID = 1L;
 
-	 private long idStagiaire;
+	private long idStagiaire;
 
 	 private long idSession;
 

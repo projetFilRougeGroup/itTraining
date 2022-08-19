@@ -1,6 +1,7 @@
 package com.training.entites;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -36,7 +37,7 @@ public class Theme {
 	
 	
 	public Theme() {
-		
+		super();
 	}
 	
 	public Theme(long idTheme, String nomTheme) {
@@ -91,9 +92,31 @@ public class Theme {
 	}
 
 	@Override
+	public int hashCode() {
+		return Objects.hash( idTheme, nomTheme);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Theme other = (Theme) obj;
+		try {
+			return (idTheme == other.idTheme)	&& Objects.equals(nomTheme, other.nomTheme);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	@Override
 	public String toString() {
-		return "Theme [idTheme=" + idTheme + ", nomTheme=" + nomTheme + ", formation="
-				+ formation + "]";
+		return "Theme [idTheme=" + idTheme + ", nomTheme=" + nomTheme + ", formation=" 	+ formation + ", supertheme=" 	+ supertheme.toString() + "]";
 	}
 	
 }

@@ -1,12 +1,14 @@
 package com.training.entites;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.JoinColumn;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -27,7 +29,7 @@ public class Prerequis {
 	private String quizz;
 	
 	
-	@ManyToMany(mappedBy="formationPrerequis")
+	@ManyToMany(mappedBy="formationPrerequis", fetch= FetchType.EAGER)
 	private Set<Formation> preqs = new HashSet<Formation>();
 	
 	
@@ -71,8 +73,26 @@ public class Prerequis {
 		this.preqs = preqs;
 	}
 	@Override
+	
+	
+	
 	public String toString() {
 		return "Prerequis [idPrerequis=" + idPrerequis + ", descriptionPrerequis=" + descriptionPrerequis + ", quizz="
 				+ quizz + ", preqs=" + preqs + "]";
+	}
+	@Override
+	public int hashCode() {
+		return Objects.hash(idPrerequis);
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Prerequis other = (Prerequis) obj;
+		return idPrerequis == other.idPrerequis;
 	}	
 }

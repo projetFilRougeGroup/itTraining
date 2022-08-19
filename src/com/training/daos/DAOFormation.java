@@ -6,6 +6,7 @@ package com.training.daos;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 
+import org.hibernate.Hibernate;
 import org.jboss.logging.Logger;
 
 import java.sql.Connection;
@@ -332,8 +333,13 @@ public class DAOFormation {
 	public Theme getTheme(long idTheme) {
 		EntityManager em = JpaUtil.getEmf().createEntityManager();
 
-		Theme theme = em.find( Theme.class, idTheme);
+		
+		Theme theme = em.createQuery( "SELECT th from Theme th LEFT JOIN FETCH th.soustheme sth LEFT JOIN FETCH th.formation fth", Theme.class).getSingleResult();
 
+	
+//		Theme theme = em.find( Theme.class, idTheme);
+//		Hibernate.initialize(theme.getSoustheme());
+//		Hibernate.initialize(theme.getFormation());
 		em.close();
 		return theme;
 	}

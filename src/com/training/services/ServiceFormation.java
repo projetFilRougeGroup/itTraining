@@ -230,7 +230,14 @@ public class ServiceFormation {
 		logger.debug("Nombre d'enseignant trouvé avec le mot clé "+keyWord+" : "+result.size());
 		return result;
 	}
-
+	
+	public List<Enseignant> rechercheFormateur(String skill) {
+	DAOEnseignant de = new DAOEnseignant();
+	List<Enseignant> lEnseignant = de.getAllEnseignant();
+	List<Enseignant> result = lEnseignant.stream().filter(f -> ((f.getNomEnseignant()).toLowerCase()).contains(skill.toLowerCase()) || ((f.getPrenomEnseignant()).toLowerCase()).contains(skill.toLowerCase()) || ((f.getTelEnseignant()).toLowerCase()).contains(skill.toLowerCase()) || ((f.getEmailEnseignant()).toLowerCase()).contains(skill.toLowerCase()) || ((f.getAdresseEnseignant()).toLowerCase()).contains(skill.toLowerCase())).collect(Collectors.toList());
+	logger.debug("Nombre d'enseignant trouvé avec le mot clé "+skill+" : "+result.size());
+	return result;
+}
 	public void addEnseignant(String nomEnseignant, String prenomEnseignant, String emailEnseignant,
 			String telEnseignant, String adresseEnseignant) {
 		DAOEnseignant de = new DAOEnseignant();

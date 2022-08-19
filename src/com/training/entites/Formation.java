@@ -6,6 +6,7 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -42,14 +43,14 @@ public class Formation {
 	private int dureeFormation;
 	
 	
-	@ManyToMany(cascade=CascadeType.PERSIST)
+	@ManyToMany(cascade=CascadeType.ALL, fetch= FetchType.EAGER)
 	@JoinTable(name="T_Formation_Prerequis", joinColumns=@JoinColumn(name="Formation_id"), inverseJoinColumns=@JoinColumn(name="Prereq_id"))
 	private Set<Prerequis> formationPrerequis = new HashSet<>();
 	
-	@ManyToMany (cascade=CascadeType.PERSIST, mappedBy="formation")
+	@ManyToMany (cascade=CascadeType.ALL, mappedBy="formation", fetch= FetchType.EAGER)
 	private Set<Theme> theme = new HashSet<>();
 	
-	@OneToMany (cascade=CascadeType.PERSIST, mappedBy="formation")
+	@OneToMany (cascade=CascadeType.PERSIST, mappedBy="formation", fetch= FetchType.EAGER)
 	private Set<Session> sessions = new HashSet<>();
 	
 	public Formation() {
@@ -168,6 +169,7 @@ public class Formation {
 				+ referenceFormation + ", publicFormation=" + publicFormation + ", objectifsFormation="
 				+ objectifsFormation + ", detailsFormation=" + detailsFormation + ", chaptersFormation="
 				+ chaptersFormation + ", priceFormation=" + priceFormation + ", dureeFormation=" + dureeFormation
-				+ ", formationPrerequis=" + formationPrerequis + ", theme=" + theme + ", sessions=" + sessions + "]";
+				// attention: collections
+				+ ", formationPrerequis=" + formationPrerequis.size() + ", theme=" + theme.size() + ", sessions=" + sessions.size() + "]";
 	}		
 }

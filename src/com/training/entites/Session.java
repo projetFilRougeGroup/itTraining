@@ -35,7 +35,7 @@ public class Session {
 	private Enseignant enseignant;
 	
 	@OneToMany (cascade=CascadeType.PERSIST)
-	private Set<Stagiaire>	stagiaires;;
+	private Set<Stagiaire>	stagiaires;
 	
 	@OneToMany (cascade=CascadeType.PERSIST, mappedBy="idReservation")
 	private Set<Reservation> reservations = new HashSet<Reservation>();

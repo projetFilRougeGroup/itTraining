@@ -19,7 +19,7 @@ http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
 		<class>com.training.entites.Stagiaire</class>
 		<class>com.training.entites.Theme</class>
 		<class>com.training.entites.Enseignant</class>
-		
+		<class>com.training.entites.Evaluation</class>
 
 		<properties>
 			<!-- Login -->
@@ -53,7 +53,7 @@ http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
 				value="script" />
 			<property
 				name="javax.persistence.schema-generation.drop-script-source"
-				value="META-INF/drop.sql" />
+				value="META-INF/sql/drop.sql" />
 
 
 			<property name="hibernate.show_sql" value="true" />
