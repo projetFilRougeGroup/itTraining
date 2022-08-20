@@ -1,6 +1,7 @@
 package com.training.entites;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -162,6 +163,24 @@ public class Formation {
 	}
 	public void setFormationPrerequis(Set<Prerequis> formationPrerequis) {
 		this.formationPrerequis = formationPrerequis;
+	}
+	
+	
+	
+	@Override
+	public int hashCode() {
+		return Objects.hash(idFormation, referenceFormation);
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Formation other = (Formation) obj;
+		return idFormation == other.idFormation && Objects.equals(referenceFormation, other.referenceFormation);
 	}
 	@Override
 	public String toString() {

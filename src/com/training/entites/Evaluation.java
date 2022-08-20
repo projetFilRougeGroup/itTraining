@@ -1,40 +1,43 @@
 package com.training.entites;
 
+import java.util.Objects;
+
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.ManyToOne;
+import javax.persistence.MapsId;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
 import com.training.util.EvaluationId;
 
-@Entity
-@Table(name="Session_Stagiaire")
+@Entity(name = "Evaluation")
+@Table(name="Evaluation")
 @IdClass(EvaluationId.class)
 public class Evaluation {
-	@Id
-	private long idStagiaire;
-	@Id
-	private long idSession;
+ 
+    @EmbeddedId
+    @ManyToOne(fetch = FetchType.LAZY)
+    @MapsId("idSession")
+    private Session session;
+    
+    @EmbeddedId
+    @ManyToOne(fetch = FetchType.LAZY)
+    @MapsId("IdStagiare")
+	private Stagiaire stagiaire;
 	@Column
-	private int accueil;
+	private int eval_accueil;
 	@Column
-	private int salle;
+	private int eval_salle;
 	@Column
-	private int support;
+	private int eval_support;
 	@Column
-	private int Enseignant;
-		
-	
-	 @ManyToOne
-	 @PrimaryKeyJoinColumn(name="idStagiaire", referencedColumnName="idStagiaire")
-	 private Session session;
+	private int eval_Enseignant;
 
-	 @ManyToOne
-	 @PrimaryKeyJoinColumn(name="idSession", referencedColumnName="idSession")	
-	 private Stagiaire stagiaire;
 
 
 	 
@@ -43,46 +46,37 @@ public class Evaluation {
 			super();
 
 		} 
-		public Evaluation(long idStagiaire, long idSession) {
+		public Evaluation(Stagiaire stagiaire,		Session session) {
 			super();
-			this.idStagiaire = idStagiaire;
-			this.idSession = idSession;
+			this.stagiaire = stagiaire;
+			this.session = session;
 		}
-		public long getIdStagiaire() {
-			return idStagiaire;
+		
+		
+		
+		public int getEval_accueil() {
+			return eval_accueil;
 		}
-		public void setIdStagiaire(long idStagiaire) {
-			this.idStagiaire = idStagiaire;
+		public void setEval_accueil(int eval_accueil) {
+			this.eval_accueil = eval_accueil;
 		}
-		public long getIdSession() {
-			return idSession;
+		public int getEval_salle() {
+			return eval_salle;
 		}
-		public void setIdSession(long idSession) {
-			this.idSession = idSession;
+		public void setEval_salle(int eval_salle) {
+			this.eval_salle = eval_salle;
 		}
-		public int getAccueil() {
-			return accueil;
+		public int getEval_support() {
+			return eval_support;
 		}
-		public void setAccueil(int accueil) {
-			this.accueil = accueil;
+		public void setEval_support(int eval_support) {
+			this.eval_support = eval_support;
 		}
-		public int getSalle() {
-			return salle;
+		public int getEval_Enseignant() {
+			return eval_Enseignant;
 		}
-		public void setSalle(int salle) {
-			this.salle = salle;
-		}
-		public int getSupport() {
-			return support;
-		}
-		public void setSupport(int support) {
-			this.support = support;
-		}
-		public int getEnseignant() {
-			return Enseignant;
-		}
-		public void setEnseignant(int enseignant) {
-			Enseignant = enseignant;
+		public void setEval_Enseignant(int eval_Enseignant) {
+			this.eval_Enseignant = eval_Enseignant;
 		}
 		public Session getSession() {
 			return session;
@@ -95,6 +89,22 @@ public class Evaluation {
 		}
 		public void setStagiaire(Stagiaire stagiaire) {
 			this.stagiaire = stagiaire;
+		}
+		@Override
+		public int hashCode() {
+			return Objects.hash(session, stagiaire);
+		}
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj)
+				return true;
+			if (obj == null)
+				return false;
+			if (getClass() != obj.getClass())
+				return false;
+			Evaluation other = (Evaluation) obj;
+			return session == other.session && stagiaire == other.stagiaire;
 		} 
 
+		
 }

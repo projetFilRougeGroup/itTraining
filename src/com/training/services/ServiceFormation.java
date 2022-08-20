@@ -2,6 +2,7 @@ package com.training.services;
 
 
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -34,7 +35,7 @@ public class ServiceFormation {
 	public Formation getFormation(Long id) {
 		
 		DAOFormation df = new DAOFormation();
-		Formation formation = df.getFormation(id);
+		Formation formation = df.getFormationfull(id); 
 		return formation;
 		
 	}
@@ -54,6 +55,7 @@ public class ServiceFormation {
 		DAOFormation df = new DAOFormation();
 		List<Formation> lForamtion = df.getAllFormation();
 		List<Formation> result = lForamtion.stream().filter(f -> ((f.getNomFormation()).toLowerCase()).contains(keyWord.toLowerCase()) || ((f.getReferenceFormation()).toLowerCase()).contains(keyWord.toLowerCase()) || ((f.getDetailsFormation()).toLowerCase()).contains(keyWord.toLowerCase()) || ((f.getChaptersFormation()).toLowerCase()).contains(keyWord.toLowerCase()) || ((f.getObjectifsFormation()).toLowerCase()).contains(keyWord.toLowerCase()) || ((f.getPublicFormation()).toLowerCase()).contains(keyWord.toLowerCase())).collect(Collectors.toList());
+		// check reference
 		logger.debug("Nombre de formation trouvé avec le mot clé " + keyWord + " : " + result.size());
 		return result;
 		
@@ -62,6 +64,21 @@ public class ServiceFormation {
 	public List<Formation> afficherToutLesFormations(){
 		DAOFormation df = new DAOFormation();
 		List<Formation> lFormation=df.getAllFormation();
+		logger.debug(lFormation);
+		return lFormation;
+	}
+	
+//	public Formation GetFormationFull(){
+//		DAOFormation df = new DAOFormation();
+//		List<Formation> lFormation=df.getAllFormation();
+//		logger.debug(lFormation);
+//		//return Formation;
+//	}
+	// renvoie formation + themes  + prerequ+ sessions
+	
+	public List<Formation> GetListeSimplifiéeFormations(){
+		DAOFormation df = new DAOFormation();
+		List<Formation> lFormation=df.getAllFormation();// id, theme, nom, reférence, durée
 		logger.debug(lFormation);
 		return lFormation;
 	}
@@ -270,7 +287,7 @@ public class ServiceFormation {
 		logger.info("Ajout d'une Session pour une formation!");
 
 	}
-	public void addSession(Long idFormation, Date debut, Date fin, float price) 
+	public void addSession(Long idFormation, LocalDate debut, LocalDate fin, float price) 
 	{
 		DAOSession ds = new DAOSession();
 		ServiceFormation SF = new ServiceFormation();

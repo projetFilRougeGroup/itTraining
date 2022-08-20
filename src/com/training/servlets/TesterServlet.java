@@ -1,14 +1,20 @@
 package com.training.servlets;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.util.Date;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.hibernate.type.LocalDateType;
+
 import com.training.entites.Formation;
 import com.training.entites.Prerequis;
+import com.training.entites.Session;
 import com.training.entites.Theme;
 import com.training.services.ServiceFormation;
 
@@ -77,17 +83,17 @@ public class TesterServlet extends HttpServlet {
 				sf.addFormation("initiation dev java", "0B301", "dev", "dev java", "details formation 0B301",	"ch1, ch2, ch3", 4995, 5);
 				sf.addFormation("approfondissement dev java", "0B303", "dev java", "dev java senior", "details formation OB303",	"ch1, ch2, ch3", 9995, 5);
 
-				Formation ob301 = sf.getFormation((long) 1);
+				Formation ob301 = sf.getFormation(3L);
 				
 				//add prerequis to formation (x)
-				Prerequis pr1 = sf.GetPrerequis((long) 1);
+				Prerequis pr1 = sf.GetPrerequis( 1L);
 				ob301.getFormationPrerequis().add(pr1);		
 				
 				//remove prerequis from formation
 			//todo
 				
 				//add theme to formation
-				Theme th1 = sf.GetTheme((long) 1);
+				Theme th1 = sf.GetTheme( 1L);
 				ob301.getTheme().add(th1);
 
 				//remove theme from formation
@@ -103,7 +109,10 @@ public class TesterServlet extends HttpServlet {
 				
 				
 				//Session
-				
+				LocalDate datdeb= LocalDate.now();
+				Session sess1 = new Session(datdeb, datdeb, (float) 999.9);
+						
+						
 				//enseignant
 					//assignation()
 				
@@ -111,6 +120,8 @@ public class TesterServlet extends HttpServlet {
 				//reservation
 				
 				//stagiaires
+				
+				
 				//evaluation
 
 

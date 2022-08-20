@@ -1,6 +1,8 @@
 package com.training.entites;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -19,8 +21,8 @@ public class Session {
 
 	@Id@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long idSession;
-	private Date dateDebutSession;
-	private Date dateFinSession;
+	private LocalDate dateDebutSession;
+	private LocalDate dateFinSession; // champs calculé datedébut 
 	private float price;
 //	private int nb_mini;
 //	private int nb_max;
@@ -44,14 +46,14 @@ public class Session {
 	public Session() {
 		
 	}
-	public Session(long idSession, Date dateDebutSession, Date dateFinSession, float price) {
+	public Session(long idSession, LocalDate dateDebutSession, LocalDate dateFinSession, float price) {
 		super();
 		this.idSession = idSession;
 		this.dateDebutSession = dateDebutSession;
 		this.dateFinSession = dateFinSession;
 		this.price = price;
 	}
-	public Session(Date dateDebutSession, Date dateFinSession, float price) {
+	public Session(LocalDate dateDebutSession, LocalDate dateFinSession, float price) {
 		super();
 		this.dateDebutSession = dateDebutSession;
 		this.dateFinSession = dateFinSession;
@@ -63,16 +65,16 @@ public class Session {
 	public void setIdSession(long idSession) {
 		this.idSession = idSession;
 	}
-	public Date getDateDebutSession() {
+	public LocalDate getDateDebutSession() {
 		return dateDebutSession;
 	}
-	public void setDateDebutSession(Date dateDebutSession) {
+	public void setDateDebutSession(LocalDate dateDebutSession) {
 		this.dateDebutSession = dateDebutSession;
 	}
-	public Date getDateFinSession() {
+	public LocalDate getDateFinSession() {
 		return dateFinSession;
 	}
-	public void setDateFinSession(Date dateFinSession) {
+	public void setDateFinSession(LocalDate dateFinSession) {
 		this.dateFinSession = dateFinSession;
 	}
 	public float getPrice() {
@@ -107,6 +109,22 @@ public class Session {
 	}
 	public void setReservations(Set<Reservation> reservations) {
 		this.reservations = reservations;
+	}	
+	
+	@Override
+	public int hashCode() {
+		return Objects.hash(idSession);
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Session other = (Session) obj;
+		return idSession == other.idSession;
 	}
 	@Override
 	public String toString() {

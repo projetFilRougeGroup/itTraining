@@ -117,7 +117,10 @@ public class DAOFormation {
 		}
 		return f;
 	}	
-	
+
+	public Formation getFormationfull(long idFormation) {
+		return null;
+	}
 	/**
 	 * Suppression d'une formation
 	 * @param idFormation
