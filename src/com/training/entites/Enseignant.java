@@ -5,6 +5,7 @@ import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -22,7 +23,7 @@ public class Enseignant {
 	private String telEnseignant;
 	private String adresseEnseignant;
 	
-	@OneToMany (cascade=CascadeType.PERSIST,mappedBy="enseignant")
+	@OneToMany (cascade=CascadeType.PERSIST,mappedBy="enseignant", fetch = FetchType.EAGER)
 	private Set<Session> sessions = new HashSet<Session>();
 	
 //	@OneToMany (cascade=CascadeType.PERSIST,mappedBy="enseignant")

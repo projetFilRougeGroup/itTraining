@@ -22,11 +22,11 @@
 			</tr>			
 			
 			<tr>
-			    <td>Date début session (dd-MM-yyyy)</td>
+			    <td>Date début session (dd/MM/yyyy)</td>
 			    <td><input name="dateDebut" type="text"/></td>
 			</tr>
 			<tr>
-			    <td>Date de fin de session(dd-MM-yyyy)</td>
+			    <td>Date de fin de session(dd/MM/yyyy)</td>
 			    <td><input name="dateFin" type="text"/></td>
 			</tr>
 			

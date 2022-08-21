@@ -257,28 +257,50 @@ public class ServiceFormation {
 }
 	public void addEnseignant(String nomEnseignant, String prenomEnseignant, String emailEnseignant,
 			String telEnseignant, String adresseEnseignant) {
+		
 		DAOEnseignant de = new DAOEnseignant();
-		de.addEnseignant(nomEnseignant, prenomEnseignant, emailEnseignant, telEnseignant, adresseEnseignant);
+		Enseignant enseignant= new Enseignant(nomEnseignant, prenomEnseignant,  emailEnseignant, telEnseignant, adresseEnseignant);
+		de.addEnseignant(enseignant);
+		
 		logger.info("L'enseignant à été bien ajouté");
 		
 	}
-
+	public void addEnseignant(Enseignant enseignant) {
+		
+		DAOEnseignant de = new DAOEnseignant();
+		de.addEnseignant(enseignant);
+		
+		logger.info("L'enseignant à été bien ajouté");
+		
+	}
 	public void modifierEnseignant(long idEnseignant, String nomEnseignant, String prenomEnseignant,
 			String telEnseignant, String emailEnseignant, String adresseEnseignant) {
 		
 		DAOEnseignant de = new DAOEnseignant();
-		de.modifierEnseignant(idEnseignant,nomEnseignant, prenomEnseignant, emailEnseignant, telEnseignant, adresseEnseignant);
-		logger.info("L'enseignant à été modifier !" );
+		Enseignant enseignant= new Enseignant(idEnseignant, nomEnseignant, prenomEnseignant,  emailEnseignant, telEnseignant, adresseEnseignant);
+		de.modifierEnseignant(enseignant);
+		logger.info("L'enseignant à été modifié !" );
 	}
-
+	public void modifierEnseignant(Enseignant enseignant) {
+		
+		DAOEnseignant de = new DAOEnseignant();
+    	de.modifierEnseignant(enseignant);
+		logger.info("L'enseignant à été modifié !" );
+	}
 	public void supprimerEnseignant(long idEnseignant) {
 		
 		DAOEnseignant de = new DAOEnseignant();
 		de.deleteEnseignant(idEnseignant);
-		logger.info("l'enseignant à été bien supprimer");
+		logger.info("l'enseignant à été bien supprimé");
 		
 	}
-	
+	public void supprimerEnseignant(Enseignant enseignant) {
+		
+		DAOEnseignant de = new DAOEnseignant();
+		de.deleteEnseignant(enseignant);
+		logger.info("l'enseignant à été bien supprimé");
+		
+	}	
 	
 	public void addSession(Session session) 
 	{

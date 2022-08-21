@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.hibernate.type.LocalDateType;
 
+import com.training.entites.Enseignant;
 import com.training.entites.Formation;
 import com.training.entites.Prerequis;
 import com.training.entites.Session;
@@ -110,11 +111,19 @@ public class TesterServlet extends HttpServlet {
 				
 				//Session
 				LocalDate datdeb= LocalDate.now();
-				Session sess1 = new Session(datdeb, datdeb, (float) 999.9);
-						
+				Session sess1 = new Session( datdeb, datdeb, (float) 999.9);
+				sf.addSession(sess1);		
 						
 				//enseignant
 					//assignation()
+				
+				sf.addEnseignant("bendraou", "reda", "reda.ben@gmail.com", "0607080910", "la ou il habite");
+				Enseignant ens2 = new Enseignant ("hellart","jacques", "emailjacque", "teljacques", "adresse jacques");
+				sf.addEnseignant(ens2);
+				
+				sess1.setEnseignant(ens2);
+				ens2.getSessions().add(sess1);
+				sf.modifierEnseignant(ens2);
 				
 				//Salle
 				//reservation

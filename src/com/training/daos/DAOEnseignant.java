@@ -42,7 +42,19 @@ public class DAOEnseignant {
 		em.close();
 		
 	}
-
+	
+	public void addEnseignant(Enseignant enseignant) {
+		EntityManager em = JpaUtil.getEmf().createEntityManager();
+		EntityTransaction tx = em.getTransaction();
+		tx.begin();
+		
+		
+		em.persist(enseignant);
+		
+		tx.commit();
+		em.close();
+		
+	}
 
 	public void modifierEnseignant(long idEnseignant, String nomEnseignant, String prenomEnseignant,
 			String emailEnseignant, String telEnseignant, String adresseEnseignant) {
@@ -67,6 +79,21 @@ public class DAOEnseignant {
 		tx.commit();
 		em.close();	
 	}
+	
+	public void modifierEnseignant(Enseignant enseignant) {
+		
+		EntityManager em = JpaUtil.getEmf().createEntityManager();
+		EntityTransaction tx = em.getTransaction();
+		tx.begin();
+		
+
+		
+		em.persist(enseignant);
+		
+		tx.commit();
+		em.close();	
+	}
+	
 	public void deleteEnseignant(long idEnseignant) {
 	
 		EntityManager em = JpaUtil.getEmf().createEntityManager();
@@ -74,10 +101,23 @@ public class DAOEnseignant {
 		tx.begin();
 
 		Enseignant ensSupp = em.find(Enseignant.class, idEnseignant);
-
 		em.remove(ensSupp);
+		
 		tx.commit();
 		em.close();
 		
 	}
+	
+	public void deleteEnseignant(Enseignant enseignant) {
+		
+		EntityManager em = JpaUtil.getEmf().createEntityManager();
+		EntityTransaction tx = em.getTransaction();
+		tx.begin();
+		
+		em.remove(enseignant);
+		
+		tx.commit();
+		em.close();
+		
+	}	
 }

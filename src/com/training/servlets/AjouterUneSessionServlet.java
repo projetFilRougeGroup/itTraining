@@ -2,6 +2,8 @@ package com.training.servlets;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -52,22 +54,24 @@ public class AjouterUneSessionServlet extends HttpServlet {
 		Long id = Long.parseLong(request.getParameter("ID_Formation"));
 
 		//optionnels
-		Date dateDebut = null;
-		Date dateFin = null;
-		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
-
+		LocalDate dateDebut = null;
+		LocalDate dateFin = null;
+		//SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		// LocalDate format = yyyy-MM-dd
+		
 		// example : String dateInString = "7-Jun-2013";
 		try {
-				dateDebut = formatter.parse(request.getParameter("dateDebut"));
+				dateDebut = LocalDate.parse(request.getParameter("dateDebut"),formatter);
 			} catch (Exception e) {
-				messagefailure +="date début incompatible dd-MM-yyyy ";
+				messagefailure +="date début incompatible dd/MM/yyyy ";
 			failure=true;
 			};
 
 		try {
-		dateFin = formatter.parse(request.getParameter("dateFin"));
+				dateFin = LocalDate.parse(request.getParameter("dateFin"),formatter);
 		} catch (Exception e) {
-			messagefailure +="date fin incompatible dd-MM-yyyy ";
+			messagefailure +="date fin incompatible dd/MM/yyyy ";
 			failure=true;
 		};		
 		float prixsession =Float.parseFloat(request.getParameter("prixsession"));
