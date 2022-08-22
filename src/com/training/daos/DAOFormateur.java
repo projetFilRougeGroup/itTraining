@@ -1,23 +1,13 @@
 package com.training.daos;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
-import javax.persistence.NamedNativeQueries;
-import javax.persistence.NamedNativeQuery;
-import javax.sql.DataSource;
 
 import org.jboss.logging.Logger;
 
-import com.mysql.cj.protocol.Resultset;
 import com.training.entites.Enseignant;
-import com.training.entites.Formation;
 import com.training.util.JpaUtil;
 
 
@@ -133,17 +123,21 @@ public List<Enseignant> getAllFormateurs(String skill) {
 	}
 
 @SuppressWarnings("null")
-public Enseignant getAllFormateurs1(String idSession) {
+public Enseignant getAllFormateurs1(long idSession) {
 	EntityManager em = JpaUtil.getEmf().createEntityManager();
 	EntityTransaction tx = em.getTransaction();
 	tx.begin();
 	em.createNativeQuery("");
-	@SuppressWarnings("unchecked")
-	Enseignant formateur =  em.createQuery(
-			"SELECT f,s FROM Enseignant f join f.Session s on s.idsession where s.idSession = ?0", Enseignant.class)
-			.setParameter(0, idSession)
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	Enseignant formateur =   (Enseignant) em.createQuery(
+			
+	"SELECT a FROM Enseignant a LEFT JOIN FETCH a.Sessions b WHERE b.idSession =?0", Enseignant.class).getSingleResult();
+	
+	
+	
+	//.setParameter(0, idSession)
 		    
-		    .getSingleResult();
+		    
 	
 	
 	

@@ -115,7 +115,7 @@ public class ServiceFormation {
 		return  lForamteur;
 		
 	}
-	public Enseignant rechercheFormateur1(String keyWord) {
+	public Enseignant rechercheFormateur1(long keyWord) {
 		DAOFormateur df = new DAOFormateur();
 		Enseignant lForamteur = df.getAllFormateurs1(keyWord);
 		logger.info("Found Professor in database");

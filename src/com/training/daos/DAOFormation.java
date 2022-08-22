@@ -6,6 +6,7 @@ package com.training.daos;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 
+import org.hibernate.Hibernate;
 import org.jboss.logging.Logger;
 
 import java.sql.Connection;
@@ -18,6 +19,7 @@ import java.util.List;
 import com.training.util.JpaUtil;
 import com.training.entites.Messages;
 import com.training.entites.Prerequis;
+import com.training.entites.Theme;
 import com.training.entites.Formation;
 
 
@@ -69,8 +71,9 @@ public class DAOFormation {
 	 * Récupére une formation
 	 * @param idFormation
 	 * @return
+	 * WAS getFormation, but returns boolean. renamed CheckFormation
 	 */
-	public boolean getFormation(long idFormation) {
+	public boolean checkFormation(long idFormation) {
 
 		boolean success=false;
 		try {
@@ -89,8 +92,35 @@ public class DAOFormation {
 		}
 		return success;
 	}
-	
-	
+	/**
+	 * Récupére une formation
+	 * @param idFormation
+	 * @return
+	 */
+	public Formation getFormation(long idFormation) {
+
+		boolean success=false;
+		Formation f = null;
+		try {
+			EntityManager em=JpaUtil.getEmf().createEntityManager();
+			EntityTransaction tx =  em.getTransaction();
+			tx.begin();
+
+			 f = em.find(Formation.class, idFormation);
+
+			logger.info("Formation: "+ (f!=null?f.toString():" pas de formation trouvé pour l'id: " + idFormation));
+			tx.commit();
+			em.close();
+			success=true;
+		} catch (Exception e) {
+			logger.error(e);
+		}
+		return f;
+	}	
+
+	public Formation getFormationfull(long idFormation) {
+		return null;
+	}
 	/**
 	 * Suppression d'une formation
 	 * @param idFormation
@@ -177,6 +207,20 @@ public class DAOFormation {
 			
 		return true;
 	}
+
+	public boolean modifyFormation(Formation formation) {
+		
+		EntityManager em = JpaUtil.getEmf().createEntityManager();
+		EntityTransaction tx = em.getTransaction();
+		tx.begin();
+
+		em.merge(formation);
+		
+		tx.commit();
+		em.close();
+			
+		return true;
+	}	
 	
 	public boolean modifyPrerequis(long idFormation, String descriptionPrerequis,String quizz) {
 		
@@ -204,4 +248,150 @@ public class DAOFormation {
 	}
 
 
+	public boolean addTheme(String nomTheme) {
+
+		boolean success=false;
+		try {
+			EntityManager em=JpaUtil.getEmf().createEntityManager();
+			EntityTransaction tx =  em.getTransaction();
+			tx.begin();
+
+			Theme theme = new Theme(nomTheme);
+			System.out.println(" arg: "+ nomTheme+ ", theme.nom:" + theme.getNomTheme());
+//			theme.setSupertheme(supertheme);
+//			supertheme.getSousthemes().add(theme);
+//			theme.setSousthemes(sousthemes);
+			
+			em.persist(theme);
+			tx.commit();
+			em.close();
+			success=true;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return success;
+	}
+
+	
+//	@Override
+//	public boolean addTheme(String nomTheme, Theme supertheme) {
+//
+//		boolean success=false;
+//		Set<Theme> sousthemes = new HashSet<Theme>();
+//		
+//		success = addTheme(nomTheme, supertheme,sousthemes );
+//		return success;	
+//	}
+
+
+
+	public boolean addTheme(Theme theme) {
+		
+		boolean success=false;
+		try {
+			EntityManager em=JpaUtil.getEmf().createEntityManager();
+
+			EntityTransaction tx =  em.getTransaction();
+			tx.begin();
+
+//			theme.setSupertheme(supertheme);
+//			supertheme.getSousthemes().add(theme);
+//			theme.setSousthemes(sousthemes);
+			
+			em.persist(theme);
+			tx.commit();
+			em.close();
+			success=true;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return success;
+	}
+	
+	
+	@SuppressWarnings("unchecked")
+	public List<Theme> getAllTheme() {
+		EntityManager em = JpaUtil.getEmf().createEntityManager();
+		EntityTransaction tx = em.getTransaction();
+		tx.begin();
+		em.createNativeQuery("");
+		List<Theme> LTheme = em.createQuery(
+			    "SELECT f FROM Theme f")
+			    .getResultList();
+		tx.commit();
+		em.close();
+		return LTheme;
+	}
+
+
+
+
+	public List<Theme> getTheme(String NomTheme) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+
+	public Theme getTheme(long idTheme) {
+		EntityManager em = JpaUtil.getEmf().createEntityManager();
+
+		
+		Theme theme = em.createQuery( "SELECT th from Theme th LEFT JOIN FETCH th.soustheme sth LEFT JOIN FETCH th.formation fth", Theme.class).getSingleResult();
+
+	
+//		Theme theme = em.find( Theme.class, idTheme);
+//		Hibernate.initialize(theme.getSoustheme());
+//		Hibernate.initialize(theme.getFormation());
+		em.close();
+		return theme;
+	}
+
+
+	public boolean deleteTheme(long idTheme) {
+		// TODO Auto-generated method stub
+		
+		boolean success = false;
+
+		try {
+			EntityManager em = JpaUtil.getEmf().createEntityManager();
+			EntityTransaction tx = em.getTransaction();
+			tx.begin();
+
+			Theme tSupp = em.find(Theme.class, idTheme);
+
+			em.remove(tSupp);
+			tx.commit();
+			em.close();
+			success = true;
+
+		} catch (Exception e) {
+			logger.error(e);
+		}
+		return success;
+		
+	}
+
+	
+	public boolean deleteTheme(Theme theme) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	public boolean UpdateTheme(Theme theme) {
+
+		boolean success=false;
+		try {
+			EntityManager em=JpaUtil.getEmf().createEntityManager();
+			EntityTransaction tx =  em.getTransaction();
+			tx.begin();
+			em.merge(theme);
+			tx.commit();
+			em.close();
+			success=true;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return success;
+	}	
+	
 }

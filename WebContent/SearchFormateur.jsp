@@ -33,7 +33,7 @@
 				    <label for="rech">
 				    Trouver une formateur  !
 				    </label>
-				   <p> <input type="text" name="skill" placeholder="search by Session id of prof."/>
+				   <p> <input type="text" name="idSession" placeholder="search by Session id of prof."/>
 				    <input type="submit" value="Chercher !"/>
 	 
   </form>    

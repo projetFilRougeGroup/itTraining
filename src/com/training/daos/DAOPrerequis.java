@@ -9,6 +9,7 @@ import org.jboss.logging.Logger;
 
 
 import com.training.entites.Prerequis;
+import com.training.entites.Theme;
 import com.training.util.JpaUtil;
 
 public class DAOPrerequis {
@@ -58,6 +59,15 @@ public class DAOPrerequis {
 		return prerequis;
 	}
 
+	public Prerequis getPrerequis(Long idPrerequis) {
+		EntityManager em = JpaUtil.getEmf().createEntityManager();
+
+		Prerequis prerequis = em.find( Prerequis.class, idPrerequis);
+				
+		em.close();
+		return prerequis;
+	}	
+	
 
 	public boolean deletePrerequis(long idPrerequis) {
 		// TODO Auto-generated method stub

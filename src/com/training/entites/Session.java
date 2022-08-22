@@ -5,6 +5,7 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -35,8 +36,8 @@ public class Session {
 	//@JoinColumn(name="idFormation")
 	private Formation formation;
 	
-	@ManyToOne(cascade = CascadeType.MERGE)
-	
+	@ManyToOne(cascade = CascadeType.MERGE,fetch = FetchType.EAGER)
+	//@JoinColumn(name="idSession",referencedColumnName = "idSession")
 	private Enseignant enseignant;
 	
 	@ManyToMany (cascade=CascadeType.MERGE,mappedBy="")
