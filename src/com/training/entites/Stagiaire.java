@@ -5,26 +5,38 @@ import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+import org.hibernate.annotations.NaturalId;
+import org.hibernate.annotations.NaturalIdCache;
 
 @Entity
+@Table(name = "Stagiaire")
 public class Stagiaire {
 	
-	@Id@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Id@GeneratedValue(strategy=GenerationType.IDENTITY)@Column(name = "IDSTAGIAIRE")
 	private long idStagiaire;
 	private String nomStagiaire;
 	private String prenomStagiaire;
+	
+	@NaturalId
 	private String emailStagiaire;
 	private String telStagiaire;
 	private String adresseStagiaire;
 	
-	@OneToMany (cascade=CascadeType.PERSIST)
-	private Set<Session> sessions = new HashSet<Session>();
+    @OneToMany(
+            mappedBy = "stagiaire",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+        )	
+	private Set<Evaluation> evaluations = new HashSet<Evaluation>();
 	
 	public Stagiaire() {
 		
@@ -50,28 +62,32 @@ public class Stagiaire {
 	}
 	
 	public Stagiaire(String nomStagiaire, String prenomStagiaire, String emailStagiaire,
-			String telStagiaire, String adresseStagiaire, Session session) {
+			String telStagiaire, String adresseStagiaire, Evaluation evaluation) {
 		super();
 		this.nomStagiaire = nomStagiaire;
 		this.prenomStagiaire = prenomStagiaire;
 		this.emailStagiaire = emailStagiaire;
 		this.telStagiaire = telStagiaire;
 		this.adresseStagiaire = adresseStagiaire;
-		this.sessions.add(session);
+		this.evaluations.add(evaluation);
 	}
 	public Stagiaire(String nomStagiaire, String prenomStagiaire, String emailStagiaire,
-			String telStagiaire, String adresseStagiaire, Set<Session> sessions) {
+			String telStagiaire, String adresseStagiaire, Set<Evaluation> evaluations) {
 		super();
 		this.nomStagiaire = nomStagiaire;
 		this.prenomStagiaire = prenomStagiaire;
 		this.emailStagiaire = emailStagiaire;
 		this.telStagiaire = telStagiaire;
 		this.adresseStagiaire = adresseStagiaire;
-		this.sessions=sessions;
+		this.evaluations=evaluations;
 	}	
+	
 	public long getIdStagiaire() {
 		return idStagiaire;
 	}
+	public long getId() {
+		return idStagiaire;
+	}	
 	public void setIdStagiaire(long idStagiaire) {
 		this.idStagiaire = idStagiaire;
 	}
@@ -106,17 +122,23 @@ public class Stagiaire {
 	public void setAdresseStagiaire(String adresseStagiaire) {
 		this.adresseStagiaire = adresseStagiaire;
 	}
-	public Set<Session> getSessions() {
-		return sessions;
-	}
-	public void setSessions(Set<Session> sessions) {
-		this.sessions = sessions;
-	}
+
+    public Set<Evaluation> getEvaluations() {
+        return evaluations;
+    }
+ 
+    public void setUserGroups(Set<Evaluation> evaluation) {
+        this.evaluations = evaluation;
+    }
+     
+    public void addUserGroup(Evaluation Evaluation) {
+        this.evaluations.add(Evaluation);
+    }
 	
 	
 	@Override
 	public int hashCode() {
-		return Objects.hash(emailStagiaire, idStagiaire);
+		return Objects.hash( idStagiaire);
 	}
 	@Override
 	public boolean equals(Object obj) {
@@ -127,13 +149,14 @@ public class Stagiaire {
 		if (getClass() != obj.getClass())
 			return false;
 		Stagiaire other = (Stagiaire) obj;
-		return Objects.equals(emailStagiaire, other.emailStagiaire) && idStagiaire == other.idStagiaire;
+		return idStagiaire == other.idStagiaire;
 	}
+	
 	@Override
 	public String toString() {
 		return "Stagiaire [idStagiaire=" + idStagiaire + ", nomStagiaire=" + nomStagiaire + ", prenomStagiaire="
 				+ prenomStagiaire + ", emailStagiaire=" + emailStagiaire + ", telStagiaire=" + telStagiaire
-				+ ", adresseStagiaire=" + adresseStagiaire + ", sessions=" + sessions + "]";
+				+ ", adresseStagiaire=" + adresseStagiaire + "]";
 	}
 	
 }

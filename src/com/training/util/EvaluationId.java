@@ -2,51 +2,79 @@ package com.training.util;
 
 import java.io.Serializable;
 
-public class EvaluationId  implements Serializable {
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import javax.persistence.ManyToOne;
 
-	private static final long serialVersionUID = 1L;
+import com.training.entites.Session;
+import com.training.entites.Stagiaire;
 
-	private long idStagiaire;
+@Embeddable
+public class EvaluationId implements Serializable {
 
-	 private long idSession;
+	@Column(name = "idSession")
+	private Long IdSession;
+	
+	@Column(name = "IdStagiaire")
+	private Long IdStagiaire;
 
-	 public EvaluationId() {
+	public EvaluationId() {
 		super();
-
-	}
-
-	 public long getIdStagiaire() {
-		return idStagiaire;
-	}
-
-	public void setIdStagiaire(long idStagiaire) {
-		this.idStagiaire = idStagiaire;
-	}
-
-	public long getIdSession() {
-		return idSession;
-	}
-
-	public void setIdSession(long idSession) {
-		this.idSession = idSession;
-	}
-
-	public EvaluationId(long idStagiaire, long idSession) {
+	}	
+	
+	
+	public EvaluationId(Long idSession, Long idStagiaire) {
 		super();
-		this.idStagiaire = idStagiaire;
-		this.idSession = idSession;
+		IdSession = idSession;
+		IdStagiaire = idStagiaire;
 	}
 
+	public Long getIdSession() {
+		return IdSession;
+	}
+
+	public void setIdSession(Long idSession) {
+		IdSession = idSession;
+	}
+
+	public Long getIdStagiaire() {
+		return IdStagiaire;
+	}
+
+	public void setIdStagiaire(Long idStagiaire) {
+		IdStagiaire = idStagiaire;
+	}
+
+	@Override
 	public int hashCode() {
-	  return (int)(idStagiaire + idSession);
-	 }
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((IdSession == null) ? 0 : IdSession.hashCode());
+		result = prime * result + ((IdStagiaire == null) ? 0 : IdStagiaire.hashCode());
+		return result;
+	}
 
-	 public boolean equals(Object object) {
-	  if (object instanceof EvaluationId) {
-		  EvaluationId otherId = (EvaluationId) object;
-	   return (otherId.idSession == this.idSession) && (otherId.idStagiaire == this.idStagiaire);
-	  }
-	  return false;
-	 }
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		EvaluationId other = (EvaluationId) obj;
+		if (IdSession == null) {
+			if (other.IdSession != null)
+				return false;
+		} else if (!IdSession.equals(other.IdSession))
+			return false;
+		if (IdStagiaire == null) {
+			if (other.IdStagiaire != null)
+				return false;
+		} else if (!IdStagiaire.equals(other.IdStagiaire))
+			return false;
+		return true;
+	}
 
 	}

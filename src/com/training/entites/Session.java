@@ -1,25 +1,28 @@
 package com.training.entites;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-//import javax.persistence.JoinTable;
+
 //import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "Session")
 public class Session {
 
-	@Id@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Id@GeneratedValue(strategy=GenerationType.IDENTITY)@Column(name = "ID_SESSION")	
 	private long idSession;
 	private LocalDate dateDebutSession;
 	private LocalDate dateFinSession; // champs calculé datedébut 
@@ -36,12 +39,14 @@ public class Session {
 	@JoinColumn(name="idEnseignant")
 	private Enseignant enseignant;
 	
-	@OneToMany (cascade=CascadeType.PERSIST)
-	private Set<Stagiaire>	stagiaires;
+    @OneToMany(
+            mappedBy = "session",
+            cascade = CascadeType.ALL
+        )
+	private Set<Evaluation>	evaluations = new HashSet<Evaluation>();
 	
 	@OneToMany (cascade=CascadeType.PERSIST, mappedBy="idReservation")
 	private Set<Reservation> reservations = new HashSet<Reservation>();
-
 	
 	public Session() {
 		
@@ -59,7 +64,12 @@ public class Session {
 		this.dateFinSession = dateFinSession;
 		this.price = price;
 	}
+	
+
 	public long getIdSession() {
+		return idSession;
+	}
+	public long getId() {
 		return idSession;
 	}
 	public void setIdSession(long idSession) {
@@ -83,7 +93,16 @@ public class Session {
 	public void setPrice(float price) {
 		this.price = price;
 	}
-	
+
+	public Set<Evaluation> getEvaluations() {
+		return evaluations;
+	}
+	public void setEvaluation(Set<Evaluation> evaluations) {
+		this.evaluations = evaluations;
+	}
+	public void addEvaluation(Evaluation evaluation) {
+		this.evaluations.add(evaluation);
+	}	
 	public Formation getFormation() {
 		return formation;
 	}
@@ -96,20 +115,37 @@ public class Session {
 	public void setEnseignant(Enseignant enseignant) {
 		this.enseignant = enseignant;
 	}
+
 	
-	
-	public Set<Stagiaire> getStagiaires() {
-		return stagiaires;
-	}
-	public void setStagiaires(Set<Stagiaire> stagiaires) {
-		this.stagiaires = stagiaires;
-	}
 	public Set<Reservation> getReservations() {
 		return reservations;
 	}
 	public void setReservations(Set<Reservation> reservations) {
 		this.reservations = reservations;
 	}	
+	
+	  public void addStagiaire(Stagiaire stagiaire) {
+	        Evaluation evaluation = new Evaluation(this, stagiaire);
+	        evaluations.add(evaluation);
+	        stagiaire.getEvaluations().add(evaluation);
+	    }
+	 
+	    public void removeStagiaire(Stagiaire stagiaire) {
+	        for (Iterator<Evaluation> iterator = evaluations.iterator();
+	             iterator.hasNext(); ) {
+	        	Evaluation evaluation = iterator.next();
+	 
+	            if (evaluation.getSession().equals(this) &&
+	            		evaluation.getStagiaire().equals(stagiaire)) {
+	                iterator.remove();
+	                evaluation.getStagiaire().getEvaluations().remove(evaluation);
+	                evaluation.setSession(null);
+	                evaluation.setStagiaire(null);
+	            }
+	        }
+	    }	
+	
+	
 	
 	@Override
 	public int hashCode() {
