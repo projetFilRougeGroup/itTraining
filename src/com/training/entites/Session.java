@@ -1,57 +1,68 @@
 package com.training.entites;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
-@Entity
+import org.hibernate.annotations.GenericGenerator;
+
+@Entity@Table(name="Sessions")
 public class Session {
 
-	@Id@GeneratedValue(strategy=GenerationType.IDENTITY)
+	
+	@Column
+	//@Id @GeneratedValue(generator="system-uuid")
+	//@GenericGenerator(name="system-uuid", strategy = "uuid")
+	//@GenericGenerator(name = "generator", strategy = "increment")
+    @Id
+    
 	private long idSession;
-	private Date dateDebutSession;
-	private Date dateFinSession;
-	private float price;
+	private String dateDebutSession;
+	private String dateFinSession;
+	private String price;
 	
 	@ManyToOne
-	@JoinColumn(name="idFormation")
+	//@JoinColumn(name="idFormation")
 	private Formation formation;
 	
-	@ManyToOne
-	@JoinColumn(name="idEnseignant")
+	@ManyToOne(cascade = CascadeType.MERGE)
+	
 	private Enseignant enseignant;
 	
-	@ManyToMany (cascade=CascadeType.PERSIST,mappedBy="")
-	@JoinTable(name="SessionsFormations",
-		joinColumns=@JoinColumn(name="idSession"),
-		inverseJoinColumns=@JoinColumn(name="idStagiaire"))
+	@ManyToMany (cascade=CascadeType.MERGE,mappedBy="")
+	//@JoinTable(name="SessionsFormations",
+		//joinColumns=@JoinColumn(name="idSession"),
+		//inverseJoinColumns=@JoinColumn(name="idStagiaire"))
 	private Set<Stagiaire>	stagiaires = new HashSet<Stagiaire>();
 	
-	@OneToMany (cascade=CascadeType.PERSIST, mappedBy="idReservation")
+	@OneToMany (cascade=CascadeType.MERGE, mappedBy="idReservation")
 	private Set<Reservation> reservations = new HashSet<Reservation>();
+	
 
 	
 	public Session() {
 		
 	}
-	public Session(long idSession, Date dateDebutSession, Date dateFinSession, float price) {
+	public Session(long idSession, String dateDebutSession, String dateFinSession, String price ,long idEnseignant) {
 		super();
 		this.idSession = idSession;
 		this.dateDebutSession = dateDebutSession;
 		this.dateFinSession = dateFinSession;
 		this.price = price;
+	
+		
 	}
-	public Session(Date dateDebutSession, Date dateFinSession, float price) {
+	public Session(String dateDebutSession, String dateFinSession, String price) {
 		super();
 		this.dateDebutSession = dateDebutSession;
 		this.dateFinSession = dateFinSession;
@@ -63,22 +74,22 @@ public class Session {
 	public void setIdSession(long idSession) {
 		this.idSession = idSession;
 	}
-	public Date getDateDebutSession() {
+	public String getDateDebutSession() {
 		return dateDebutSession;
 	}
-	public void setDateDebutSession(Date dateDebutSession) {
+	public void setDateDebutSession(String dateDebutSession) {
 		this.dateDebutSession = dateDebutSession;
 	}
-	public Date getDateFinSession() {
+	public String getDateFinSession() {
 		return dateFinSession;
 	}
-	public void setDateFinSession(Date dateFinSession) {
+	public void setDateFinSession(String dateFinSession) {
 		this.dateFinSession = dateFinSession;
 	}
-	public float getPrice() {
+	public String getPrice() {
 		return price;
 	}
-	public void setPrice(float price) {
+	public void setPrice(String price) {
 		this.price = price;
 	}
 	
@@ -88,14 +99,7 @@ public class Session {
 	public void setFormation(Formation formation) {
 		this.formation = formation;
 	}
-	public Enseignant getEnseignant() {
-		return enseignant;
-	}
-	public void setEnseignant(Enseignant enseignant) {
-		this.enseignant = enseignant;
-	}
-	
-	
+	 	
 	public Set<Stagiaire> getStagiaires() {
 		return stagiaires;
 	}

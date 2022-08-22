@@ -42,9 +42,9 @@ public class Formation {
 	private int dureeFormation;
 	
 	
-	@ManyToMany(cascade=CascadeType.PERSIST)
-	@JoinTable(name="T_Formation_Prerequis", joinColumns=@JoinColumn(name="Formation_id"), inverseJoinColumns=@JoinColumn(name="Prereq_id"))
-	private Set<Prerequis> formationPrerequis = new HashSet<>();
+	//@ManyToMany(cascade=CascadeType.PERSIST)
+	//@JoinTable(name="T_Formation_Prerequis", joinColumns=@JoinColumn(name="Formation_id"), inverseJoinColumns=@JoinColumn(name="Prereq_id"))
+	//private Set<Prerequis> formationPrerequis = new HashSet<>();
 	
 	@ManyToMany (cascade=CascadeType.PERSIST, mappedBy="formation")
 	private Set<Theme> theme = new HashSet<>();
@@ -156,18 +156,18 @@ public class Formation {
 	public void setSessions(Set<Session> sessions) {
 		this.sessions = sessions;
 	}
-	public Set<Prerequis> getFormationPrerequis() {
-		return formationPrerequis;
-	}
-	public void setFormationPrerequis(Set<Prerequis> formationPrerequis) {
-		this.formationPrerequis = formationPrerequis;
-	}
+	//public Set<Prerequis> getFormationPrerequis() {
+	//	return formationPrerequis;
+	//}
+	//public void setFormationPrerequis(Set<Prerequis> formationPrerequis) {
+		//this.formationPrerequis = formationPrerequis;
+	//}
 	@Override
 	public String toString() {
 		return "Formation [idFormation=" + idFormation + ", nomFormation=" + nomFormation + ", referenceFormation="
 				+ referenceFormation + ", publicFormation=" + publicFormation + ", objectifsFormation="
 				+ objectifsFormation + ", detailsFormation=" + detailsFormation + ", chaptersFormation="
 				+ chaptersFormation + ", priceFormation=" + priceFormation + ", dureeFormation=" + dureeFormation
-				+ ", formationPrerequis=" + formationPrerequis + ", theme=" + theme + ", sessions=" + sessions + "]";
+				+ ", theme=" + theme + ", sessions=" + sessions + "]";
 	}		
 }

@@ -1,6 +1,5 @@
 package com.training.entites;
 
-import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -9,13 +8,17 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.TableGenerator;
 
 @Entity @Table
 public class Enseignant {
 	
-	@Id@GeneratedValue(strategy=GenerationType.IDENTITY)
+	
+	@Id
+	@GeneratedValue
 	private long idEnseignant;
 	@Column
 	private String nomEnseignant;
@@ -30,8 +33,10 @@ public class Enseignant {
 	@Column
 	private String skill;
 	
-	@OneToMany (cascade=CascadeType.PERSIST,mappedBy="enseignant")
-	private Set<Session> sessions = new HashSet<Session>();
+	
+	@OneToMany (targetEntity = Session.class ,cascade= CascadeType.ALL)
+	@JoinColumn(name="es_fk",referencedColumnName = "idEnseignant")
+	private Set<Session> sessions ;
 	
 	public Enseignant() {
 		
@@ -56,12 +61,21 @@ public class Enseignant {
 		this.telEnseignant = telEnseignant;
 		this.adresseEnseignant = adresseEnseignant;
 		this.skill=skill;
+		
+	}
+	
+	
+	
+	
+	public Enseignant(Set<Session> sessions) {
+		super();
+		this.sessions = sessions;
 	}
 	public long getIdEnseignant() {
 		return idEnseignant;
 	}
-	public void setIdEnseignant(long idEnseignant) {
-		this.idEnseignant = idEnseignant;
+	public void setIdEnseignant(long string) {
+		this.idEnseignant = string;
 	}
 	public String getNomEnseignant() {
 		return nomEnseignant;

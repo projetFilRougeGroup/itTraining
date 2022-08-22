@@ -1,10 +1,9 @@
 package com.training.services;
 
 
-
-import java.sql.ResultSet;
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.jboss.logging.Logger;
@@ -12,8 +11,10 @@ import org.jboss.logging.Logger;
 import com.training.daos.DAOFormateur;
 import com.training.daos.DAOFormation;
 import com.training.daos.DAOPrerequis;
+import com.training.daos.DAOSession;
 import com.training.entites.Formation;
 import com.training.entites.Prerequis;
+import com.training.entites.Session;
 import com.training.entites.Enseignant;
 
 public class ServiceFormation {
@@ -86,16 +87,26 @@ public class ServiceFormation {
 	}
 	
 	
-	public void AjouterFormateur(String nomEnseignant, String prenomEnseignant, String emailEnseignant,	String telEnseignant, String adresseEnseignant,String skill) {
+	public Enseignant AjouterFormateur(String nomEnseignant, String prenomEnseignant, String emailEnseignant,	String telEnseignant, String adresseEnseignant,String skill) {
 		
 		DAOFormateur dp = new DAOFormateur();
 		Enseignant enseignant= new Enseignant( nomEnseignant,prenomEnseignant, emailEnseignant, telEnseignant, adresseEnseignant ,skill);
-
+		
 //		, prenomEnseignant,  emailEnseignant,telEnseignant,  adresseEnseignant);
 		dp.addFormateur(enseignant);
 		logger.info("Added Professor in database");
+		return enseignant;
 		
 	}
+	public void AssignSession(long idsession) {
+		Session session=new Session();
+		Set<Session >sessions=new HashSet<>();
+		Enseignant enseignant= new Enseignant();
+		session.setIdSession(idsession);
+		sessions.add(session);
+		enseignant.setSessions(sessions);
+	}
+	
 	
 	public List<Enseignant> rechercheFormateur(String keyWord) {
 		DAOFormateur df = new DAOFormateur();
@@ -104,6 +115,30 @@ public class ServiceFormation {
 		return  lForamteur;
 		
 	}
+	public Enseignant rechercheFormateur1(String keyWord) {
+		DAOFormateur df = new DAOFormateur();
+		Enseignant lForamteur = df.getAllFormateurs1(keyWord);
+		logger.info("Found Professor in database");
+		return  lForamteur;
+		
+	}
+public Session AjouterSession(long idSession,String dateDebutSession, String dateFinSession, String price,long idEnseignant) {
+		
+		DAOSession ds = new DAOSession();
+		
+		Session session=new Session(idSession,dateDebutSession,dateFinSession,price,idEnseignant);
+				ds.addSession(session);
+
+//		, prenomEnseignant,  emailEnseignant,telEnseignant,  adresseEnseignant);
+		
+		logger.info("Added Session in database");
+		return session;
+	}
+
+public List<Session> AfficherLesSessions() {
+	// TODO Auto-generated method stub
+	return null;
+}
 	
-	
+
 }

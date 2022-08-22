@@ -1,14 +1,14 @@
 package com.training.servlets;
 
 import java.io.IOException;
-import java.util.Date;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.training.entites.Enseignant;
+import com.training.entites.Session;
 import com.training.services.ServiceFormation;
 
 /**
@@ -39,12 +39,19 @@ public class AjouterUneSessionServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-//		
-//		String dateDebutSession = request.getParameter("dateDebutSession");
-//		Date dateFinSession = request.getParameter("dateFinSession");
 		
-//		ServiceFormation sf = new ServiceFormation();
-		//sf.addPrerequis(dateDebutSession, dateFinSession);
+		
+		long idSession =Integer.parseInt( request.getParameter("idSession"));
+		String dateDebutSession = request.getParameter("dateDebutSession");
+		String dateFinSession = request.getParameter("dateFinSession");
+		String price=request.getParameter("price");
+		long es_fk=Integer.parseInt(request.getParameter("es_fk"));
+		
+				
+				
+ServiceFormation sf = new ServiceFormation();
+		sf.AjouterSession(idSession, dateDebutSession, dateFinSession, price,es_fk);
+		
 		
 		response.sendRedirect("index.html");
 	}

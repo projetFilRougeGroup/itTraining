@@ -23,6 +23,8 @@ import com.training.util.JpaUtil;
 
 public class DAOFormateur {
 	private static final Logger LOGGER = Logger.getLogger(Enseignant.class);
+	
+	
 	public void addFormateur(long idEnseignant, String nomEnseignant, String prenomEnseignant, String emailEnseignant,
 			String telEnseignant, String adresseEnseignant,String skil) {
 
@@ -120,11 +122,37 @@ public List<Enseignant> getAllFormateurs(String skill) {
 				.setParameter(0, skill)
 			    
 			    .getResultList();
+		
+		
+		
+		
 		System.out.println(formateur);
 		tx.commit();
 		em.close();
 		return formateur;
 	}
+
+@SuppressWarnings("null")
+public Enseignant getAllFormateurs1(String idSession) {
+	EntityManager em = JpaUtil.getEmf().createEntityManager();
+	EntityTransaction tx = em.getTransaction();
+	tx.begin();
+	em.createNativeQuery("");
+	@SuppressWarnings("unchecked")
+	Enseignant formateur =  em.createQuery(
+			"SELECT f,s FROM Enseignant f join f.Session s on s.idsession where s.idSession = ?0", Enseignant.class)
+			.setParameter(0, idSession)
+		    
+		    .getSingleResult();
+	
+	
+	
+	
+	System.out.println(formateur);
+	tx.commit();
+	em.close();
+	return formateur;
+}
 
 
 	public boolean deleteProf(long idEnseignant) {

@@ -22,9 +22,21 @@
 				    <label for="rech">
 				    Trouver une formateur  !
 				    </label>
-				   <p> <input type="text" name="skill" placeholder="skill of prof."/>
+				   <p> <input type="text" name="skill" placeholder="search by skill of prof."/>
 				    <input type="submit" value="Chercher !"/>
 	 
-  </form>      
+  </form>    
+  
+  <form action="ChercheFormateurbysessionidServlet" method="POST">
+		
+			
+				    <label for="rech">
+				    Trouver une formateur  !
+				    </label>
+				   <p> <input type="text" name="skill" placeholder="search by Session id of prof."/>
+				    <input type="submit" value="Chercher !"/>
+	 
+  </form>    
+    
 </body>
 </html>

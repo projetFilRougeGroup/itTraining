@@ -39,6 +39,8 @@ public class ChercheFormateurServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		String skill=request.getParameter("skill");
 		
+		
+		
 		 List <Enseignant>form_list=new ArrayList<>();
 		  form_list=new ServiceFormation().rechercheFormateur(skill);
 

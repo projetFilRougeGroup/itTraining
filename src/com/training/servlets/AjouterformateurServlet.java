@@ -1,23 +1,18 @@
 package com.training.servlets;
 
 import java.io.IOException;
-import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.servlet.RequestDispatcher;
+import java.util.HashSet;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
+import java.util.Set;
 import org.jboss.logging.Logger;
 
-import com.training.entites.Enseignant;
-import com.training.entites.Formation;
-import com.training.entites.Prerequis;
 import com.training.services.ServiceFormation;
+import com.training.entites.Enseignant;
+import com.training.entites.Session;
 
 /**
  * Servlet implementation class AjouterformateurServlet
@@ -54,9 +49,18 @@ public class AjouterformateurServlet extends HttpServlet {
 		String emailEnseignant=request.getParameter("emailEnseignant");
 		String adresseEnseignant=request.getParameter("adresseEnseignant");
 		String skill=request.getParameter("skill");
-		
+		long idSession=Integer.parseInt(request.getParameter("idSession"));
+		Session session=new Session();
+		Set<Session >sessions=new HashSet<>();
+		//session.setIdSession(idSession);
+		//sessions.add(session);
 		ServiceFormation sf = new ServiceFormation();
-		sf.AjouterFormateur( nomEnseignant, prenomEnseignant, emailEnseignant, telEnseignant, adresseEnseignant,skill);
+		Enseignant enseignant=sf.AjouterFormateur( nomEnseignant, prenomEnseignant, emailEnseignant, telEnseignant, adresseEnseignant,skill);
+		
+		session.setIdSession(idSession);
+		
+		enseignant.setSessions(sessions);
+		
 		
 		response.sendRedirect("index.html");
 		

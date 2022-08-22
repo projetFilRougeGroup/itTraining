@@ -39,11 +39,12 @@ background-color: #4CAF50;
 
 <table>
 <tr><td>Name Of Prof.:</td> <td><input type="text" name="nomEnseignant"/></td></tr>
-<tr><td>Prenom Prof.: 	</td><td> <td><input type="text" name="prenomEnseignant"/></td></tr>
+<tr><td>Prenom Prof.: 	</td> <td><input type="text" name="prenomEnseignant"/></td></tr>
 <tr><td>Telephone: 		</td><td> <input type="text" name="telEnseignant"/></td></tr>
 <tr><td>Email: 			</td><td> <input type="text" name="emailEnseignant"/></td></tr>
 <tr><td>Address: 		</td><td> <input type="text" name="adresseEnseignant"/></td></tr>
 <tr><td>Skill: 		</td><td> <input type="text" name="skill"/></td></tr>
+<tr><td>SessionId: 		</td><td> <input type="text" name="idSession"/></td></tr>
 <td><input type="submit" value="Ajouter !"/></td>
 			
 		</table>	

@@ -27,8 +27,8 @@ public class Prerequis {
 	private String quizz;
 	
 	
-	@ManyToMany(mappedBy="formationPrerequis")
-	private Set<Formation> preqs = new HashSet<Formation>();
+	//@ManyToMany(mappedBy="prerequis")
+	//private Set<Formation> preqs = new HashSet<Formation>();
 	
 	
 	
@@ -64,15 +64,15 @@ public class Prerequis {
 	public void setQuizz(String quizz) {
 		this.quizz = quizz;
 	}
-	public Set<Formation> getPreqs() {
-		return preqs;
-	}
-	public void setPreqs(Set<Formation> preqs) {
-		this.preqs = preqs;
-	}
+	//public Set<Formation> getPreqs() {
+	//	return preqs;
+	//}
+	//public void setPreqs(Set<Formation> preqs) {
+	//	this.preqs = preqs;
+	//}
 	@Override
 	public String toString() {
 		return "Prerequis [idPrerequis=" + idPrerequis + ", descriptionPrerequis=" + descriptionPrerequis + ", quizz="
-				+ quizz + ", preqs=" + preqs + "]";
+				+ quizz +  "]";
 	}	
 }

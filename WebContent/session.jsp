@@ -20,18 +20,26 @@
 			
 			<tr>
 			    <td>Date début session</td>
-			    <td><input name="referenceFormation" type="text"/></td>
+			    <td><input name="dateDebutSession" type="text"/></td>
 			</tr>
 			<tr>
 			    <td>Date de fin de session</td>
-			    <td><input name="nomFormation" type="text"/></td>
+			     <td><input type="text" name="dateFinSession"/></td>
 			</tr>
 			
 			<tr>
 			    <td>Prix</td>
-			    <td><input name="prerequisFormation" type="text"/></td>
+			    <td><input name="price" type="text"/></td>
+			</tr>
+			<tr>
+			    <td>Sessionid</td>
+			    <td><input name="idSession" type="text"/></td>
 			</tr>
 			
+			<tr>
+			    <td>teacher id</td>
+			    <td><input name="es_fk" type="text"/></td>
+			</tr>
 			
 			<tr>
 			    <td></td>

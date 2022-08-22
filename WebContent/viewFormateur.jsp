@@ -10,15 +10,44 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<style>
+        table {
+            width 38%
+            font-size: 20px;
+            height: 100%;
+            table-layout: fixed;
+        }
+  
+        td {
+        width:fixed
+            border: 1px solid black;
+            text-align: center;
+            padding: 10px;
+        }
+  
+        tr:nth-child(even) {
+            background-color: #00cf45;
+        }
+  
+        h1 {
+            color: green;
+        }
+        .label {
+  color: white;
+  padding: 8px;
+  font-family: Arial;
+}
+.success {background-color: #04AA6D;}
+    </style>
 </head>
+
 <body>
-<table width="700px" align="center"
-               style="border:1px solid #000000;">
-            <tr>
-                <td colspan=4 align="center"
-                    style="background-color:teal">
-                    <b>Professor Records</b></td>
-            </tr>
+<table >
+            
+                
+                  <span class="label success">Professor Records</span> 
+            
+ 
             <tr style="background-color:lightgrey;">
                
                <td><b>Id</b></td>
@@ -34,11 +63,10 @@
 	<h3>Nombre de formateur trouvé: ${fn:length(formList)}</h3>
 	<br />
 	<c:forEach var="workload" items="${formList}">
-				<table width="700px" align="center"
-               style="border:1px solid #000000;">
+				
             <tr>
-                <td colspan=4 align="center"
-                    style="background-color:teal">
+                
+
 		          
 		            <tr style="background-color:lightgrey;">
 			            <td>${workload.idEnseignant}</td>
@@ -51,10 +79,9 @@
 			            <td>${workload.telEnseignant }</td>
 			            
 		            </tr>
-	            </table>
+	            
 	</c:forEach>
 </div>
-
 </table>
 </body>
 </html>
