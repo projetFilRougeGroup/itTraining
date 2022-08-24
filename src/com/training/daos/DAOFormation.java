@@ -68,6 +68,29 @@ public class DAOFormation {
 	}
 
 	/**
+	 * Ajout d'une formation.
+	 * @param formation
+	 * @return
+	 */
+	public boolean addFormation(Formation formation) {
+
+		boolean success=false;
+		try {
+			EntityManager em=JpaUtil.getEmf().createEntityManager();
+			EntityTransaction tx =  em.getTransaction();
+			tx.begin();
+			em.persist(formation);
+			tx.commit();
+			em.close();
+			success=true;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return success;
+
+	}	
+	
+	/**
 	 * Récupére une formation
 	 * @param idFormation
 	 * @return
@@ -99,19 +122,15 @@ public class DAOFormation {
 	 */
 	public Formation getFormation(long idFormation) {
 
-		boolean success=false;
 		Formation f = null;
 		try {
 			EntityManager em=JpaUtil.getEmf().createEntityManager();
 			EntityTransaction tx =  em.getTransaction();
 			tx.begin();
-
 			 f = em.find(Formation.class, idFormation);
-
 			logger.info("Formation: "+ (f!=null?f.toString():" pas de formation trouvé pour l'id: " + idFormation));
 			tx.commit();
 			em.close();
-			success=true;
 		} catch (Exception e) {
 			logger.error(e);
 		}
@@ -119,33 +138,24 @@ public class DAOFormation {
 	}	
 
 	public Formation getFormationfull(long idFormation) {
-		return null;
-	}
-	/**
-	 * Suppression d'une formation
-	 * @param idFormation
-	 * @return
-	 */
-	public boolean deleteFormation(long idFormation) {
-		boolean success = false;
-
+		Formation formation = new Formation();
 		try {
-			EntityManager em = JpaUtil.getEmf().createEntityManager();
-			EntityTransaction tx = em.getTransaction();
+			EntityManager em=JpaUtil.getEmf().createEntityManager();
+			EntityTransaction tx =  em.getTransaction();
 			tx.begin();
-
-			Formation fSupp = em.find(Formation.class, idFormation);
-
-			em.remove(fSupp);
+			formation = (Formation) em.createQuery("SELECT f FROM Formation f where f.idFormation = ?0", Formation.class)
+//			Formation formation = (Formation) em.createQuery("SELECT f FROM Formation f left outer join f.formationPrerequis p where f.idFormation = ?0", Formation.class)
+					.setParameter(0, idFormation)
+				    .getSingleResult();
 			tx.commit();
 			em.close();
-			success = true;
-
+			logger.info("Formation: "+ (formation!=null?formation.toString():" pas de formation trouvé pour l'id: " + idFormation));
 		} catch (Exception e) {
 			logger.error(e);
 		}
-		return success;
+		return formation;
 	}
+
 	/**
 	 * Afficher tout les formations 
 	 * @return
@@ -200,7 +210,7 @@ public class DAOFormation {
 		formation.setPublicFormation(publicFormation);
 		formation.setReferenceFormation(referenceFormation);
 		
-		em.persist(formation);
+		em.merge(formation);
 		
 		tx.commit();
 		em.close();
@@ -221,6 +231,32 @@ public class DAOFormation {
 			
 		return true;
 	}	
+
+	/**
+	 * Suppression d'une formation
+	 * @param idFormation
+	 * @return
+	 */
+	public boolean deleteFormation(long idFormation) {
+		boolean success = false;
+
+		try {
+			EntityManager em = JpaUtil.getEmf().createEntityManager();
+			EntityTransaction tx = em.getTransaction();
+			tx.begin();
+
+			Formation fSupp = em.find(Formation.class, idFormation);
+
+			em.remove(fSupp);
+			tx.commit();
+			em.close();
+			success = true;
+
+		} catch (Exception e) {
+			logger.error(e);
+		}
+		return success;
+	}	
 	
 	public boolean modifyPrerequis(long idFormation, String descriptionPrerequis,String quizz) {
 		
@@ -236,7 +272,7 @@ public class DAOFormation {
 		prerequis.setDescriptionPrerequis(descriptionPrerequis);
 		prerequis.setQuizz(quizz);
 		
-		em.persist(prerequis);
+		em.merge(prerequis);
 		
 		tx.commit();
 		em.close();
@@ -248,7 +284,7 @@ public class DAOFormation {
 	}
 
 
-	public boolean addTheme(String nomTheme) {
+	public boolean addTheme(String nomTheme, long idSupertheme) {
 
 		boolean success=false;
 		try {
@@ -257,12 +293,14 @@ public class DAOFormation {
 			tx.begin();
 
 			Theme theme = new Theme(nomTheme);
+			Theme supertheme = em.find(Theme.class, idSupertheme);
 			System.out.println(" arg: "+ nomTheme+ ", theme.nom:" + theme.getNomTheme());
-//			theme.setSupertheme(supertheme);
-//			supertheme.getSousthemes().add(theme);
-//			theme.setSousthemes(sousthemes);
-			
+			theme.setSupertheme(supertheme);
+			supertheme.getSoustheme().add(theme);
+
+			em.merge(supertheme);
 			em.persist(theme);
+			
 			tx.commit();
 			em.close();
 			success=true;
@@ -272,32 +310,13 @@ public class DAOFormation {
 		return success;
 	}
 
-	
-//	@Override
-//	public boolean addTheme(String nomTheme, Theme supertheme) {
-//
-//		boolean success=false;
-//		Set<Theme> sousthemes = new HashSet<Theme>();
-//		
-//		success = addTheme(nomTheme, supertheme,sousthemes );
-//		return success;	
-//	}
-
-
-
 	public boolean addTheme(Theme theme) {
 		
 		boolean success=false;
 		try {
 			EntityManager em=JpaUtil.getEmf().createEntityManager();
-
 			EntityTransaction tx =  em.getTransaction();
 			tx.begin();
-
-//			theme.setSupertheme(supertheme);
-//			supertheme.getSousthemes().add(theme);
-//			theme.setSousthemes(sousthemes);
-			
 			em.persist(theme);
 			tx.commit();
 			em.close();
@@ -336,20 +355,15 @@ public class DAOFormation {
 	public Theme getTheme(long idTheme) {
 		EntityManager em = JpaUtil.getEmf().createEntityManager();
 
-		
 		Theme theme = em.createQuery( "SELECT th from Theme th LEFT JOIN FETCH th.soustheme sth LEFT JOIN FETCH th.formation fth", Theme.class).getSingleResult();
 
-	
-//		Theme theme = em.find( Theme.class, idTheme);
-//		Hibernate.initialize(theme.getSoustheme());
-//		Hibernate.initialize(theme.getFormation());
 		em.close();
 		return theme;
 	}
 
 
 	public boolean deleteTheme(long idTheme) {
-		// TODO Auto-generated method stub
+
 		
 		boolean success = false;
 
@@ -374,9 +388,23 @@ public class DAOFormation {
 
 	
 	public boolean deleteTheme(Theme theme) {
-		// TODO Auto-generated method stub
-		return false;
+		boolean success = false;
+
+		try {
+			EntityManager em = JpaUtil.getEmf().createEntityManager();
+			EntityTransaction tx = em.getTransaction();
+			tx.begin();
+			em.remove(theme);
+			tx.commit();
+			em.close();
+			success = true;
+
+		} catch (Exception e) {
+			logger.error(e);
+		}
+		return success;
 	}
+	
 	public boolean UpdateTheme(Theme theme) {
 
 		boolean success=false;
@@ -393,5 +421,31 @@ public class DAOFormation {
 		}
 		return success;
 	}	
+
+	
+	public boolean linkTheme( long idTheme, long idThemesup) {
+
+			boolean success = false;
+
+			try {
+				EntityManager em = JpaUtil.getEmf().createEntityManager();
+				EntityTransaction tx = em.getTransaction();
+				tx.begin();
+
+				Theme th = em.find(Theme.class, idTheme);
+				Theme thSup = em.find(Theme.class, idThemesup);
+
+				th.setSupertheme(thSup);
+				thSup.getSoustheme().add(th);
+				em.merge(th);
+				tx.commit();
+				em.close();
+				success = true;
+
+			} catch (Exception e) {
+				logger.error(e);
+			}
+			return success;
+	}
 	
 }

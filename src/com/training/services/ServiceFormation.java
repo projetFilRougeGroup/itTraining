@@ -29,9 +29,18 @@ public class ServiceFormation {
 	public void addFormation(String nomFormation, String referenceFormation, String publicFormation, String objectifsFormation, String detailsFormation, String chaptersFormation,int priceFormation, int dureeFormation) 
 	{
 		DAOFormation df = new DAOFormation();
-		df.addFormation(nomFormation, referenceFormation, publicFormation, objectifsFormation, detailsFormation, chaptersFormation,priceFormation, dureeFormation);
+		Formation formation = new Formation(nomFormation, referenceFormation, publicFormation, objectifsFormation, detailsFormation, chaptersFormation,priceFormation, dureeFormation);
+
+		df.addFormation(formation);
 		logger.info("la formation à été bien ajouter !");
 	}
+	
+	public void addFormation(Formation formation)	{
+		DAOFormation df = new DAOFormation();
+		df.addFormation(formation);
+		logger.info("la formation à été bien ajouter !");
+	}
+	
 	public Formation getFormation(Long id) {
 		
 		DAOFormation df = new DAOFormation();
@@ -123,6 +132,13 @@ public class ServiceFormation {
 		logger.info("la Prérequis à été bien ajouter !");
 		
 	}
+	public void addPrerequis(Prerequis prereq ) {
+		DAOPrerequis df = new DAOPrerequis();
+		df.addPrerequis(prereq);
+		logger.info("la Prérequis à été bien ajouter !");
+	}	
+	
+	
 	public List<Prerequis> afficherToutLesPrerequis() {
 		DAOPrerequis dp = new DAOPrerequis();
 		List<Prerequis> lPrerequis=dp.getAllPrerequis();
@@ -158,10 +174,9 @@ public class ServiceFormation {
 	public void addTheme(String nomTheme, long IdSupertheme) 
 	{
 		DAOFormation df = new DAOFormation();
-		Theme theme = new Theme(nomTheme);
-		Theme supertheme = df.getTheme(IdSupertheme);
-		theme.setSupertheme(supertheme);
-		addTheme(theme);
+
+		df.addTheme(nomTheme,IdSupertheme);
+
 		logger.info("Ajout d'un theme avec supertheme !");
 	}	
 	public void addTheme(Theme theme) 
@@ -208,6 +223,14 @@ public class ServiceFormation {
 		df.deleteTheme(idTheme);
 		logger.info("le Theme à été supprimé");
 	}
+	public void lierThemes(long idTheme, long idThemesuper)
+	{
+		DAOFormation df = new DAOFormation();
+		df.linkTheme(idTheme,idThemesuper);
+		logger.info("le Theme à été supprimé");
+	}	
+	
+	
 	public void addStagiaire(String nomStagiaire, String prenomStagiaire, String emailStagiaire, String telStagiaire,
 			String adresseStagiaire) {
 		DAOStagiaire df = new DAOStagiaire();

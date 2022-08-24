@@ -50,29 +50,25 @@ public class TesterServlet extends HttpServlet {
 		//tests SCRUDS
 				ServiceFormation sf = new ServiceFormation();		
 				//theme
-				Theme st= sf.GetTheme((long) 1);
-
-			//	sf.addTheme("Developpement", 1);
-				Theme themedev = new Theme ("Developpement");
-				themedev.setSupertheme(st);
-				st.getSoustheme().add(themedev);
-				System.out.println("4");
-				sf.addTheme(themedev);
+				//	par script	sf.addTheme("Developpement", 1);
 				
-				sf.addTheme("Modelisation", 1);
+				sf.addTheme("Modelisation");
+				sf.lierThemes(2L, 1L);
+
 				sf.addTheme("Java", 2);
 				sf.addTheme("Python", 2);
 				sf.addTheme("c--", 2);
 				sf.addTheme("Basic", 2);
 				
-				sf.supprimerTheme(7);
+				sf.supprimerTheme(4);
 				
 				Theme th_upd = sf.GetTheme((long) 6);
 				th_upd.setNomTheme("C++");
 				sf.modifierTheme(th_upd);
 				//prereq
 				
-				sf.addPrerequis("dev", "quizz dev");
+
+
 				sf.addPrerequis("dev JAVA", "quizz dev JAVA");
 
 				// test find by keyword, show list
@@ -81,28 +77,54 @@ public class TesterServlet extends HttpServlet {
 				// test update
 				
 				//formation
-				sf.addFormation("initiation dev java", "0B301", "dev", "dev java", "details formation 0B301",	"ch1, ch2, ch3", 4995, 5);
+				Prerequis prereq = new Prerequis("dev", "quizz dev");
+				//sf.addPrerequis(prereq);
+				Formation formation = new Formation("initiation dev java", "0B301", "dev", "dev java", "details formation 0B301",	"ch1, ch2, ch3", 4995, 5);
+				formation.getFormationPrerequis().add(prereq);
+				
+
+				Theme themedev = new Theme ("Developpement");
+//				Theme st= sf.GetTheme((long) 1);
+//				themedev.setSupertheme(st);
+//				st.getSoustheme().add(themedev);
+				System.out.println("4");
+				//sf.addTheme(themedev);
+				
+				formation.getTheme().add(themedev);
+				themedev.getFormation().add(formation);
+				
+				prereq.getPreqs().add(formation);
+				System.out.println("add formation OB301 (composite objects) et OB303");
+				sf.addFormation(formation);
+				Theme st= sf.GetTheme((long) 1);
+				themedev.setSupertheme(st);
+				st.getSoustheme().add(themedev);				
+				sf.modifierTheme(themedev);
+				
 				sf.addFormation("approfondissement dev java", "0B303", "dev java", "dev java senior", "details formation OB303",	"ch1, ch2, ch3", 9995, 5);
 
-				Formation ob301 = sf.getFormation(3L);
+				//Formation ob303 = sf.rechercheFormation("approfondissement").get(0);
+				Formation ob303 = sf.getFormation((long) 1L);
+
+				ob303.toString();
 				
 				//add prerequis to formation (x)
 				Prerequis pr1 = sf.GetPrerequis( 1L);
-				ob301.getFormationPrerequis().add(pr1);		
+				ob303.getFormationPrerequis().add(pr1);		
 				
 				//remove prerequis from formation
 			//todo
 				
 				//add theme to formation
 				Theme th1 = sf.GetTheme( 1L);
-				ob301.getTheme().add(th1);
+				ob303.getTheme().add(th1);
 
 				//remove theme from formation
 				//todo
 						
 				
 				//modifier formation
-				sf.modifierFormation(ob301);
+				sf.modifierFormation(ob303);
 				
 				// supprimer formation 
 					// doit refuser si sessions rattachées, QUESTION REDA

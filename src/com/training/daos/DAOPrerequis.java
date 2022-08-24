@@ -45,6 +45,24 @@ public class DAOPrerequis {
 
 	}
 
+	public boolean addPrerequis(Prerequis prerequis) {
+
+		boolean success=false;
+		try {
+			EntityManager em=JpaUtil.getEmf().createEntityManager();
+			EntityTransaction tx =  em.getTransaction();
+			tx.begin();
+
+			em.persist(prerequis);
+			tx.commit();
+			em.close();
+			success=true;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return success;
+
+	}
 
 	public List<Prerequis> getAllPrerequis() {
 		EntityManager em = JpaUtil.getEmf().createEntityManager();
@@ -93,6 +111,25 @@ public class DAOPrerequis {
 		return success;
 		
 	}
-	
+	public boolean modifyPrerequis(Prerequis prerequis) {
+		// TODO Auto-generated method stub
+		
+		boolean success = false;
+
+		try {
+			EntityManager em = JpaUtil.getEmf().createEntityManager();
+			EntityTransaction tx = em.getTransaction();
+			tx.begin();
+			em.merge(prerequis);
+			tx.commit();
+			em.close();
+			success = true;
+
+		} catch (Exception e) {
+			logger.error(e);
+		}
+		return success;
+		
+	}	
 
 }

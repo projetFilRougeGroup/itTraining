@@ -74,7 +74,7 @@ public class DAOEnseignant {
 		es.setTelEnseignant(telEnseignant);
 		es.setAdresseEnseignant(adresseEnseignant);
 		
-		em.persist(es);
+		em.merge(es);
 		
 		tx.commit();
 		em.close();	
@@ -88,7 +88,7 @@ public class DAOEnseignant {
 		
 
 		
-		em.persist(enseignant);
+		em.merge(enseignant);
 		
 		tx.commit();
 		em.close();	
