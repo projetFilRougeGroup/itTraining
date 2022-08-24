@@ -7,6 +7,8 @@ import javax.persistence.EntityTransaction;
 
 
 import com.training.entites.Enseignant;
+import com.training.entites.Session;
+import com.training.entites.Theme;
 import com.training.util.JpaUtil;
 
 public class DAOEnseignant {
@@ -120,4 +122,31 @@ public class DAOEnseignant {
 		em.close();
 		
 	}	
+	
+	
+	public boolean assignEnseignantToSession(long idEnseignant, long idSession )	 {
+					boolean success=false;
+					
+					EntityManager em = JpaUtil.getEmf().createEntityManager();
+					EntityTransaction tx = em.getTransaction();
+					tx.begin();
+				    try {					
+					Enseignant enseignant = em.find(Enseignant.class, idEnseignant);
+					Session session = em.find(Session.class, idSession);
+					
+			        if (enseignant != null && session != null) {
+			        	session.setEnseignant(enseignant);
+			        	enseignant.getSessions().add(session);
+			        	em.merge(enseignant);
+			        	em.merge(session);
+			        	success=true;
+			        } else {
+			        	success=false;
+			        }
+			        em.getTransaction().commit();
+			    } finally {
+			        em.close();
+			    }
+		return success;
+		}	
 }

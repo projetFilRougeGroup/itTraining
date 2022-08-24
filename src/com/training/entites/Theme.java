@@ -1,5 +1,6 @@
 package com.training.entites;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -17,7 +18,13 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 @Entity
-public class Theme {
+public class Theme implements Serializable{
+
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3314484641330329423L;
 
 	@Id@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long idTheme;

@@ -287,27 +287,31 @@ public class DAOFormation {
 	public boolean addTheme(String nomTheme, long idSupertheme) {
 
 		boolean success=false;
-		try {
+
 			EntityManager em=JpaUtil.getEmf().createEntityManager();
 			EntityTransaction tx =  em.getTransaction();
 			tx.begin();
 
 			Theme theme = new Theme(nomTheme);
-			Theme supertheme = em.find(Theme.class, idSupertheme);
-			System.out.println(" arg: "+ nomTheme+ ", theme.nom:" + theme.getNomTheme());
-			theme.setSupertheme(supertheme);
-			supertheme.getSoustheme().add(theme);
-
-			em.merge(supertheme);
-			em.persist(theme);
 			
-			tx.commit();
-			em.close();
-			success=true;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return success;
+			
+			try {					
+				Theme supertheme = em.find(Theme.class, idSupertheme);
+				
+		        if (supertheme != null) {
+		        	theme.setSupertheme(supertheme);
+					supertheme.getSoustheme().add(theme);
+		        	em.persist(theme);
+		        	em.merge(supertheme);
+		        	success=true;
+		        } else {
+		        	success=false;
+		        }
+		        tx.commit();
+		    } finally {
+		        em.close();
+		    }
+			return success;
 	}
 
 	public boolean addTheme(Theme theme) {
@@ -355,8 +359,9 @@ public class DAOFormation {
 	public Theme getTheme(long idTheme) {
 		EntityManager em = JpaUtil.getEmf().createEntityManager();
 
-		Theme theme = em.createQuery( "SELECT th from Theme th LEFT JOIN FETCH th.soustheme sth LEFT JOIN FETCH th.formation fth", Theme.class).getSingleResult();
-
+		Theme theme = em.createQuery( "SELECT th from Theme th LEFT JOIN FETCH th.soustheme sth LEFT JOIN FETCH th.formation fth where th.idTheme = ?0", Theme.class)
+				.setParameter(0, idTheme)
+			    .getSingleResult();
 		em.close();
 		return theme;
 	}
@@ -373,7 +378,9 @@ public class DAOFormation {
 			tx.begin();
 
 			Theme tSupp = em.find(Theme.class, idTheme);
-
+			Theme thSuper = em.find(Theme.class, tSupp.getSupertheme().getIdTheme());
+			thSuper.getSoustheme().remove(tSupp);
+			em.merge(thSuper);
 			em.remove(tSupp);
 			tx.commit();
 			em.close();

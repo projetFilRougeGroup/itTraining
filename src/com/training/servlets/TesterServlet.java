@@ -59,9 +59,9 @@ public class TesterServlet extends HttpServlet {
 				sf.addTheme("Python", 2);
 				sf.addTheme("c--", 2);
 				sf.addTheme("Basic", 2);
-				
-				sf.supprimerTheme(4);
-				
+				System.out.println("1.5, suppr theme");			
+				sf.supprimerTheme((long)4L);
+				System.out.println("2, get/set/modif theme");				
 				Theme th_upd = sf.GetTheme((long) 6);
 				th_upd.setNomTheme("C++");
 				sf.modifierTheme(th_upd);
@@ -75,7 +75,7 @@ public class TesterServlet extends HttpServlet {
 				// test find by id
 				// test delete
 				// test update
-				
+				System.out.println("3");				
 				//formation
 				Prerequis prereq = new Prerequis("dev", "quizz dev");
 				//sf.addPrerequis(prereq);
@@ -134,8 +134,19 @@ public class TesterServlet extends HttpServlet {
 				//Session
 				LocalDate datdeb= LocalDate.now();
 				Session sess1 = new Session( datdeb, datdeb, (float) 999.9);
-				sf.addSession(sess1);		
-						
+				LocalDate datdeb2= LocalDate.of(2023, 10, 20);
+				Session sess2 = new Session( datdeb2, datdeb2, (float) 999.9);
+				
+
+				sf.addSession(sess1);
+				sf.addSession(sess2);
+				sess1.setFormation(ob303);
+				sess2.setFormation(ob303);
+				sf.modifierSession(sess1);
+				sf.modifierSession(sess2);
+				
+				
+				
 				//enseignant
 					//assignation()
 				
@@ -143,14 +154,27 @@ public class TesterServlet extends HttpServlet {
 				Enseignant ens2 = new Enseignant ("hellart","jacques", "emailjacque", "teljacques", "adresse jacques");
 				sf.addEnseignant(ens2);
 				
-				sess1.setEnseignant(ens2);
-				ens2.getSessions().add(sess1);
-				sf.modifierEnseignant(ens2);
+//				sess1.setEnseignant(ens2);
+//				ens2.getSessions().add(sess1);
+//				sf.modifierEnseignant(ens2);
+				
+				long idEnseignant=1;
+				long idSession=1;
+				boolean assignationsucces = sf.assignerEnseignant(idEnseignant, idSession);
+				System.out.println("assignation succes: " + assignationsucces);
+				
+				long idFormation=2;
+
+				sf.certifierEnseignant(idEnseignant, idFormation);
+
+				
+				//stagiaires
+				
 				
 				//Salle
 				//reservation
 				
-				//stagiaires
+
 				
 				
 				//evaluation

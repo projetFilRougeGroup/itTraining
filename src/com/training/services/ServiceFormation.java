@@ -397,4 +397,25 @@ public class ServiceFormation {
 		ds.deleteSession(idSession);
 		logger.info("le Session à été supprimé");
 	}
+	
+	//assigne Enseignant a la session 
+		// ne vérifie PAS la certification
+	public boolean assignerEnseignant (long idEnseignant,long idSession) {
+		
+		boolean success = false;
+		DAOEnseignant de = new DAOEnseignant();
+		
+		// check enseignant existe, 
+		// check session existe 
+		success = de.assignEnseignantToSession(idEnseignant,idSession);
+		logger.info("Enseignant" + idEnseignant + "assigné a session " + idSession);
+		
+		return success;
+	}
+	
+	public boolean certifierEnseignant (long idEnseignant,long idFormation) {
+	// stub, to do
+	return false;
+	}
+	
 }

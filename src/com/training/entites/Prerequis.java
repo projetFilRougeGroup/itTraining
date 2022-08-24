@@ -1,5 +1,6 @@
 package com.training.entites;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -19,8 +20,13 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
-public class Prerequis {
+public class Prerequis implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3535848206311670941L;
+
 	@Id@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long idPrerequis;
 	
