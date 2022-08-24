@@ -17,6 +17,9 @@ import javax.persistence.Table;
 import org.hibernate.annotations.NaturalId;
 import org.hibernate.annotations.NaturalIdCache;
 
+import com.training.daos.DAOSession;
+import com.training.daos.DAOStagiaire;
+
 @Entity
 @Table(name = "Stagiaire")
 public class Stagiaire {
@@ -41,16 +44,7 @@ public class Stagiaire {
 	public Stagiaire() {
 		
 	}
-	public Stagiaire(long idStagiaire, String nomStagiaire, String prenomStagiaire, String emailStagiaire,
-			String telStagiaire, String adresseStagiaire) {
-		super();
-		this.idStagiaire = idStagiaire;
-		this.nomStagiaire = nomStagiaire;
-		this.prenomStagiaire = prenomStagiaire;
-		this.emailStagiaire = emailStagiaire;
-		this.telStagiaire = telStagiaire;
-		this.adresseStagiaire = adresseStagiaire;
-	}
+
 	public Stagiaire(String nomStagiaire, String prenomStagiaire, String emailStagiaire,
 			String telStagiaire, String adresseStagiaire) {
 		super();
@@ -60,7 +54,16 @@ public class Stagiaire {
 		this.telStagiaire = telStagiaire;
 		this.adresseStagiaire = adresseStagiaire;		
 	}
-	
+	public Stagiaire(long idStagiaire, String nomStagiaire, String prenomStagiaire, String emailStagiaire,
+			String telStagiaire, String adresseStagiaire) {
+		super();
+		this.idStagiaire = idStagiaire;
+		this.nomStagiaire = nomStagiaire;
+		this.prenomStagiaire = prenomStagiaire;
+		this.emailStagiaire = emailStagiaire;
+		this.telStagiaire = telStagiaire;
+		this.adresseStagiaire = adresseStagiaire;
+	}	
 	public Stagiaire(String nomStagiaire, String prenomStagiaire, String emailStagiaire,
 			String telStagiaire, String adresseStagiaire, Evaluation evaluation) {
 		super();
@@ -127,15 +130,38 @@ public class Stagiaire {
         return evaluations;
     }
  
-    public void setUserGroups(Set<Evaluation> evaluation) {
+    public void addEvaluations(Set<Evaluation> evaluation) {
         this.evaluations = evaluation;
     }
      
-    public void addUserGroup(Evaluation Evaluation) {
+    public void addEvaluation(Evaluation Evaluation) {
         this.evaluations.add(Evaluation);
     }
-	
-	
+    
+    public boolean addSession(Session session) 	
+    {
+		  boolean success=false;
+		  
+	        Evaluation evaluation = new Evaluation(session, this);
+	        evaluations.add(evaluation);
+	        session.getEvaluations().add(evaluation);
+	        success=true;
+	        return success;
+    }
+    
+	  public boolean addSession(long idSession) {
+		  boolean success=false;
+		  DAOSession ds = new DAOSession();
+		  Session session = ds.getSession(idSession);
+			if   (session != null) {
+		        Evaluation evaluation = new Evaluation(session, this);
+		        evaluations.add(evaluation);
+		        session.getEvaluations().add(evaluation);
+		        success=true;
+		  }
+		  return success;
+	    }   
+    
 	@Override
 	public int hashCode() {
 		return Objects.hash( idStagiaire);

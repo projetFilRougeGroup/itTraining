@@ -19,7 +19,10 @@ import java.util.List;
 import com.training.util.JpaUtil;
 import com.training.entites.Messages;
 import com.training.entites.Prerequis;
+import com.training.entites.Session;
+import com.training.entites.Stagiaire;
 import com.training.entites.Theme;
+import com.training.entites.Enseignant;
 import com.training.entites.Formation;
 
 
@@ -454,5 +457,30 @@ public class DAOFormation {
 			}
 			return success;
 	}
-	
+
+	public boolean assignStagiaireToSession(long idStagiaire, long idSession )	 {
+		boolean success=false;
+		
+		EntityManager em = JpaUtil.getEmf().createEntityManager();
+		EntityTransaction tx = em.getTransaction();
+		tx.begin();
+	    try {					
+	    Stagiaire stagiaire = em.find(Stagiaire.class, idStagiaire);
+		Session session = em.find(Session.class, idSession);
+		
+        if (stagiaire != null && session != null) {
+        	success = session.addStagiaire(stagiaire); // peut échouer si max atteint
+        	stagiaire.addSession(session);
+        	em.merge(stagiaire);
+        	em.merge(session);
+
+        } else {
+        	success=false;
+        }
+        em.getTransaction().commit();
+    } finally {
+        em.close();
+    }
+return success;
+}		
 }

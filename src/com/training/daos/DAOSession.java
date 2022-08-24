@@ -6,6 +6,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 
 import com.training.entites.Enseignant;
+import com.training.entites.Formation;
 import com.training.entites.Session;
 import com.training.util.JpaUtil;
 
@@ -116,8 +117,33 @@ public class DAOSession {
 		        	em.merge(session);
 		        	// stub check
 		        	success=true;
-		        	
+			tx.commit();
+			em.close();
 		    return success;
 		}
-
+	
+	public boolean setSessionFormation	(long idSession,long idFormation){
+		boolean success=false;
+		
+		EntityManager em = JpaUtil.getEmf().createEntityManager();
+		EntityTransaction tx = em.getTransaction();
+		tx.begin();
+	    try {					
+	    	Session session = em.find(Session.class, idSession);
+	    	Formation formation = em.find(Formation.class, idFormation);
+        	if (session != null && formation != null ) {
+        		formation.getSessions().add(session);
+        		session.setFormation(formation);
+        	em.merge(session);
+        	em.merge(formation);
+        	success=true;
+        	} else {
+        	success=false;
+        	}
+        	tx.commit();
+	    } finally {
+        em.close();
+	    }
+	    return success;
+	}
 }

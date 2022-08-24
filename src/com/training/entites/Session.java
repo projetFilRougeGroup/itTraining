@@ -18,6 +18,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.training.daos.DAOFormation;
+import com.training.daos.DAOStagiaire;
+
 @Entity
 @Table(name = "Session")
 public class Session {
@@ -28,9 +31,10 @@ public class Session {
 	private LocalDate dateFinSession; // champs calculé datedébut 
 	private float price;
 //	private int nb_mini;
-//	private int nb_max;
+	private int nb_max;
 // 	private Lieux lieu_session //(dont distancielle), la session est créée pour un lieu, la résa salle doit suivre
 	
+
 	@ManyToOne
 	@JoinColumn(name="idFormation")
 	private Formation formation;
@@ -124,12 +128,31 @@ public class Session {
 		this.reservations = reservations;
 	}	
 	
-	  public void addStagiaire(Stagiaire stagiaire) {
+	  public boolean addStagiaire(Stagiaire stagiaire) {
+		  boolean success=false;
+		  if (this.getEvaluations().size() + 1 < this.nb_max) {
+		  
 	        Evaluation evaluation = new Evaluation(this, stagiaire);
 	        evaluations.add(evaluation);
 	        stagiaire.getEvaluations().add(evaluation);
+	        success=true;
+		  }
+		  return success;
 	    }
-	 
+
+	  public boolean addStagiaire(long idStagiaire) {
+		  boolean success=false;
+		  if (this.getEvaluations().size() + 1 < this.nb_max) {
+			  DAOStagiaire df = new DAOStagiaire();
+			  Stagiaire stagiaire = df.getStagiaire(idStagiaire);
+	        Evaluation evaluation = new Evaluation(this, stagiaire);
+	        evaluations.add(evaluation);
+	        stagiaire.getEvaluations().add(evaluation);
+	        success=true;
+		  }
+		  return success;
+	    }	  
+	  
 	    public void removeStagiaire(Stagiaire stagiaire) {
 	        for (Iterator<Evaluation> iterator = evaluations.iterator();
 	             iterator.hasNext(); ) {
@@ -145,7 +168,12 @@ public class Session {
 	        }
 	    }	
 	
-	
+		public int getNb_max() {
+			return nb_max;
+		}
+		public void setNb_max(int nb_max) {
+			this.nb_max = nb_max;
+		}	
 	
 	@Override
 	public int hashCode() {

@@ -235,10 +235,15 @@ public class ServiceFormation {
 			String adresseStagiaire) {
 		DAOStagiaire df = new DAOStagiaire();
 		df.addStagiaire(nomStagiaire, prenomStagiaire, emailStagiaire, telStagiaire, adresseStagiaire);
-		logger.info("le stagiaire à été bien ajouter !");
+		logger.info("le stagiaire à été bien ajouté !");
 		
 	}
-
+	public void addStagiaire(Stagiaire stagiaire) {
+		DAOStagiaire df = new DAOStagiaire();
+		df.addStagiaire(stagiaire);
+		logger.info("le stagiaire à été bien ajouté !");
+		
+	}
 	public List<Stagiaire> rechercheStagiaire(String keyWord) {
 		DAOStagiaire df = new DAOStagiaire();
 		List<Stagiaire> lStagiaire = df.getAllStagiaire();
@@ -246,19 +251,23 @@ public class ServiceFormation {
 		logger.debug("Nombre de stagiaire trouvé avec le mot clé " + keyWord + " : " + result.size());
 		return result;
 	}
-
+	public Stagiaire getStagiaire(long idStagiaire) {
+		DAOStagiaire df = new DAOStagiaire();
+		Stagiaire stagiaire = df.getStagiaire(idStagiaire);
+		return stagiaire;
+	}
 	public void modifierStagiaire(long idStagiaire, String nomStagiaire, String prenomStagiaire, String telStagiaire,
 			String emailStagiaire, String adresseStagiaire) {
 			DAOStagiaire ds = new DAOStagiaire();
 			ds.modifyStagiaire(idStagiaire, nomStagiaire,prenomStagiaire,telStagiaire, emailStagiaire,adresseStagiaire);
-			logger.info("le stagiaire à été bien modifier");
+			logger.info("le stagiaire à été bien modifié");
 		
 	}
 
 	public void supprimerStagiaire(long idStagiaire) {
 
 		DAOStagiaire ds = new DAOStagiaire();
-		ds.deleteStalgiaire(idStagiaire);
+		ds.deleteStagiaire(idStagiaire);
 		logger.info("le stagiaire à été bien supprimer");
 		
 	}
@@ -382,13 +391,19 @@ public class ServiceFormation {
 		logger.debug("Nombre de formation trouvé avec le mot clé " + keyWord + " : " + result.size());
 		return result;
 	}
+
+	public Session getSession(long idSession) {
+		DAOSession ds = new DAOSession();
+		Session session = ds.getSession(idSession);
+		return session;
+	}	
 	
 	public void modifierSession(Session Session)
 	{
 		
 		DAOSession ds = new DAOSession();
 		ds.UpdateSession(Session);
-		logger.info("le Session à été modifié");
+		logger.info("la Session à été modifiée");
 	}
 	
 	public void supprimerSession(long idSession)
@@ -412,10 +427,30 @@ public class ServiceFormation {
 		
 		return success;
 	}
+
+	public boolean assignerStagiaire (long idStagiaire,long idSession) {
+		
+		boolean success = false;
+		DAOFormation df = new DAOFormation();
+		
+		// check enseignant existe, 
+		// check session existe 
+		success = df.assignStagiaireToSession(idStagiaire,idSession);
+		logger.info("Enseignant" + idStagiaire + "assigné a session " + idSession);
+		
+		return success;
+	}	
 	
 	public boolean certifierEnseignant (long idEnseignant,long idFormation) {
 	// stub, to do
 	return false;
 	}
+	
+	public boolean setSessionFormation (long idSession,long idFormation) {
+		boolean success;
+		DAOSession ds = new DAOSession();
+		success = ds.setSessionFormation(idSession,idFormation );
+		return success;
+		}
 	
 }

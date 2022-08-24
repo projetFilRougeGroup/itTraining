@@ -16,6 +16,7 @@ import com.training.entites.Enseignant;
 import com.training.entites.Formation;
 import com.training.entites.Prerequis;
 import com.training.entites.Session;
+import com.training.entites.Stagiaire;
 import com.training.entites.Theme;
 import com.training.services.ServiceFormation;
 
@@ -137,13 +138,23 @@ public class TesterServlet extends HttpServlet {
 				LocalDate datdeb2= LocalDate.of(2023, 10, 20);
 				Session sess2 = new Session( datdeb2, datdeb2, (float) 999.9);
 				
-
+				
 				sf.addSession(sess1);
 				sf.addSession(sess2);
+				
 				sess1.setFormation(ob303);
-				sess2.setFormation(ob303);
+				sess1.setNb_max(10);
 				sf.modifierSession(sess1);
+				
+
+				sess2.setNb_max(14);
+				sess2.setDateFinSession(LocalDate.of(2023, 10, 25));
 				sf.modifierSession(sess2);
+				
+				sess2.setFormation(ob303);
+	
+				System.out.println("link session-formation");
+				sf.setSessionFormation(sess2.getId(),ob303.getIdFormation());
 				
 				
 				
@@ -162,14 +173,22 @@ public class TesterServlet extends HttpServlet {
 				long idSession=1;
 				boolean assignationsucces = sf.assignerEnseignant(idEnseignant, idSession);
 				System.out.println("assignation succes: " + assignationsucces);
+				sf.assignerEnseignant(ens2.getIdEnseignant(), sess1.getId());
+				
 				
 				long idFormation=2;
-
-				sf.certifierEnseignant(idEnseignant, idFormation);
+				sf.certifierEnseignant(idEnseignant, idFormation); // stub
 
 				
 				//stagiaires
+				sf.addStagiaire("boucheron", "pierre", "email.p@email.b", "0610111213", "adresse pierre");
+				Stagiaire stag2= new Stagiaire("Maher", "Amri", "email.M@email.A", "+3309080706", "adresse maher");
+				sf.addStagiaire(stag2);
 				
+				long idStag1 = 1;
+				Stagiaire stagToIncrire = sf.getStagiaire(idStag1);
+				Session sessioninscription = sf.getSession(idSession);
+				sf.assignerStagiaire(stagToIncrire.getId(), sessioninscription.getId() );
 				
 				//Salle
 				//reservation
