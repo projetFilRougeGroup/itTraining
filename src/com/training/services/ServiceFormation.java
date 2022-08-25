@@ -12,14 +12,17 @@ import org.jboss.logging.Logger;
 import com.training.daos.DAOEnseignant;
 import com.training.daos.DAOFormation;
 import com.training.daos.DAOPrerequis;
+import com.training.daos.DAOSalle;
 import com.training.daos.DAOSession;
 import com.training.daos.DAOStagiaire;
 import com.training.entites.Enseignant;
 import com.training.entites.Formation;
 import com.training.entites.Prerequis;
+import com.training.entites.Salle;
 import com.training.entites.Session;
 import com.training.entites.Stagiaire;
 import com.training.entites.Theme;
+import com.training.enums.City;
 
 public class ServiceFormation {
 	
@@ -41,25 +44,24 @@ public class ServiceFormation {
 		logger.info("la formation à été bien ajouter !");
 	}
 	
-	public Formation getFormation(Long id) {
+	public Formation getFormation(Long idFormation) {
 		
 		DAOFormation df = new DAOFormation();
-		Formation formation = df.getFormationfull(id); 
+		Formation formation = df.getFormationfull(idFormation); 
 		return formation;
 		
 	}
-	public boolean CheckFormation(Long id) {
+	public boolean CheckFormation(Long idFormation) {
 		boolean success=false;
-		
 		DAOFormation df = new DAOFormation();
-		Formation formation = df.getFormation(id);
-
+		Formation formation = getFormation(idFormation);
 		
-		if (!formation.equals(null)) {
+		if (formation!=null) {
 			logger.debug("Formation "+ formation.getNomFormation() + " trouvée");
 			success=true;}
 		return success;
 	}	
+	
 	public List<Formation> rechercheFormation(String keyWord) {
 		DAOFormation df = new DAOFormation();
 		List<Formation> lForamtion = df.getAllFormation();
@@ -272,6 +274,12 @@ public class ServiceFormation {
 		
 	}
 
+	public Enseignant getEnseignant(long idEnseignant) {
+		DAOEnseignant de = new DAOEnseignant();
+		Enseignant Enseignant = de.getEnseignant(idEnseignant);
+		return Enseignant;
+	}	
+	
 	public List<Enseignant> rechercheEnseignant(String keyWord) {
 		DAOEnseignant de = new DAOEnseignant();
 		List<Enseignant> lEnseignant = de.getAllEnseignant();
@@ -297,6 +305,7 @@ public class ServiceFormation {
 		logger.info("L'enseignant à été bien ajouté");
 		
 	}
+	
 	public void addEnseignant(Enseignant enseignant) {
 		
 		DAOEnseignant de = new DAOEnseignant();
@@ -384,9 +393,6 @@ public class ServiceFormation {
 				((String.valueOf(f.getPrice())).toLowerCase()).contains(keyWord.toLowerCase()) ||
 				((f.getEnseignant().getNomEnseignant()).toLowerCase()).contains(keyWord.toLowerCase()) ||
 				((f.getEnseignant().getPrenomEnseignant()).toLowerCase()).contains(keyWord.toLowerCase()) 
-//				||
-//				((f.g()).toLowerCase()).contains(keyWord.toLowerCase()) ||
-//				((f.getPublicFormation()).toLowerCase()).contains(keyWord.toLowerCase())
 				).collect(Collectors.toList());
 		logger.debug("Nombre de formation trouvé avec le mot clé " + keyWord + " : " + result.size());
 		return result;
@@ -412,6 +418,91 @@ public class ServiceFormation {
 		ds.deleteSession(idSession);
 		logger.info("le Session à été supprimé");
 	}
+	
+	// salles
+	public void addSalle(Salle Salle) 
+	{
+		DAOSalle ds = new DAOSalle();
+		 ds.addSalle(Salle);
+		logger.info("Ajout d'une Salle pour une formation!");
+
+	}
+	public void addSalle(String codeSalle,String adresseCentre, String emailCentre,int nombreDePlaces, City city,Boolean salleEquipeeOrdi,Boolean salleEquipeeProjecteur) 
+	{
+		DAOSalle ds = new DAOSalle();
+		Salle salle = new Salle( codeSalle, adresseCentre,  emailCentre, nombreDePlaces,  city, salleEquipeeOrdi, salleEquipeeProjecteur );
+		ds.addSalle(salle);
+		logger.info("Ajout d'une Salle pour une formation!");
+
+	}	
+	public Salle afficherUneSalle(Long idSalle){
+		DAOSalle ds = new DAOSalle();
+		Salle Salle=ds.getSalle(idSalle);
+		logger.info(Salle);
+		return Salle;
+	}	
+	
+	public List<Salle> AfficherLesSalles() {
+		DAOSalle ds = new DAOSalle();
+		List<Salle> lSalle = ds.getAllSalles();
+		return lSalle;
+	}	
+
+	public List<Salle> rechercheSalle(String keyWord) {
+		DAOSalle ds = new DAOSalle();
+		List<Salle> lSalle = ds.getAllSalles();
+//nombreDePlaces salleEquipeeOrdi, salleEquipeeProjecteur champs non parcourus
+				List<Salle> result = lSalle.stream().filter(f -> 
+				((f.getCodeSalle().toLowerCase())).contains(keyWord.toLowerCase()) ||
+				((f.getAdresseCentre().toLowerCase())).contains(keyWord.toLowerCase()) ||
+				((f.getEmailCentre().toLowerCase())).contains(keyWord.toLowerCase()) ||
+				((f.getCity().toString().toLowerCase())).contains(keyWord.toLowerCase())
+				).collect(Collectors.toList());
+				
+		logger.debug("Nombre de salles trouvées avec le mot clé " + keyWord + " : " + result.size());
+		return result;
+	}
+
+	public Salle getSalle(long idSalle) {
+		DAOSalle ds = new DAOSalle();
+		Salle Salle = ds.getSalle(idSalle);
+		return Salle;
+	}	
+	
+	public void modifierSalle(Salle Salle)
+	{
+		
+		DAOSalle ds = new DAOSalle();
+		ds.modifierSalle(Salle);
+		logger.info("la Salle à été modifiée");
+	}
+	public void modifierSalle(long idSalle,String codeSalle,String adresseCentre, String emailCentre,int nombreDePlaces, City city,Boolean salleEquipeeOrdi,Boolean salleEquipeeProjecteur) { 
+	
+		
+		DAOSalle ds = new DAOSalle();
+		ds.modifierSalle(idSalle, codeSalle, adresseCentre,  emailCentre, nombreDePlaces,  city, salleEquipeeOrdi, salleEquipeeProjecteur );
+
+		logger.info("la Salle à été modifiée");
+	}	
+	
+	
+	public void supprimerSalle(long idSalle)
+	{
+		DAOSalle ds = new DAOSalle();
+		ds.deleteSalle(idSalle);
+		logger.info("le Salle à été supprimée");
+	}
+	
+	public void supprimerSalle(Salle salle)
+	{
+		DAOSalle ds = new DAOSalle();
+		ds.deleteSalle(salle);
+		logger.info("le Salle à été supprimée");
+	}
+	
+	
+	
+	
 	
 	//assigne Enseignant a la session 
 		// ne vérifie PAS la certification

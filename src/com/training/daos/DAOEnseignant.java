@@ -18,17 +18,26 @@ public class DAOEnseignant {
 	public List<Enseignant> getAllEnseignant() {
 		EntityManager em = JpaUtil.getEmf().createEntityManager();
 		EntityTransaction tx = em.getTransaction();
-		tx.begin();
+
 		em.createNativeQuery("");
 		List<Enseignant> enseignants = em.createQuery(
 			    "SELECT e FROM Enseignant e")
 			    .getResultList();
-		tx.commit();
+
 		em.close();
 		return enseignants;
 	}
+	
+	public Enseignant getEnseignant(long idEnseignant) {
+		EntityManager em = JpaUtil.getEmf().createEntityManager();
+		EntityTransaction tx = em.getTransaction();
 
+		Enseignant enseignant = em.find(Enseignant.class, idEnseignant);
 
+		em.close();
+		return enseignant;
+	}
+	
 	public void addEnseignant(String nomEnseignant, String prenomEnseignant, String emailEnseignant,
 			String telEnseignant, String adresseEnseignant) {
 		EntityManager em = JpaUtil.getEmf().createEntityManager();

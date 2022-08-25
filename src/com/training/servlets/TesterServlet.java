@@ -15,9 +15,11 @@ import org.hibernate.type.LocalDateType;
 import com.training.entites.Enseignant;
 import com.training.entites.Formation;
 import com.training.entites.Prerequis;
+import com.training.entites.Salle;
 import com.training.entites.Session;
 import com.training.entites.Stagiaire;
 import com.training.entites.Theme;
+import com.training.enums.City;
 import com.training.services.ServiceFormation;
 
 /**
@@ -191,9 +193,31 @@ public class TesterServlet extends HttpServlet {
 				sf.assignerStagiaire(stagToIncrire.getId(), sessioninscription.getId() );
 				
 				//Salle
+
+				Salle salle1 = new Salle("10.15", "adresse centre", "email centre", 20, City.Bordeaux, false, true);
+				
+				sf.addSalle(salle1);
+				sf.addSalle("4.02", "adresse centre", "email centre", 16, City.Paris, true, true);
+				
+				Salle sallemod = sf.getSalle(1L);
+				sallemod.setCity(City.Paris);
+				sf.modifierSalle(sallemod);
+				
+				sf.addSalle("tosuppr", "adresse centre", "email centre", 999, City.Paris, true, true);
+				Salle sallesuppr = sf.rechercheSalle("tosuppr").get(0);
+				sf.supprimerSalle(sallesuppr);
+				
 				//reservation
 				
-
+				//reserv salle S pour session sess au jour j
+				
+				//reserv salle S pour session sess (du jour début a jour fin (d'apres durée formation))
+				
+				// echec de réservation si salle 
+				
+				//trouve salle dispo pour session (dispo de session.jourdeb a session.jourdeb+formation.duree (en jours ouvrés)
+				// avec caractéristiques requises par formation&session (équipement informatique, places (pour session.evaluations.size si pas précisé)
+				// etc...
 				
 				
 				//evaluation
