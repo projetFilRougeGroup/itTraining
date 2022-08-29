@@ -34,19 +34,39 @@ public class Evaluation {
     @MapsId("StagiaireId")
     @JoinColumn(name = "idStagiaire")
 	private Stagiaire stagiaire;
+
+	@Column(name = "formation_recommande")
+	private int f_recom;  
 	
+    
 	@Column(name = "evaluation_accueil")
-	private int eval_accueil;
+	private int accueil;
 	@Column
-	private int eval_salle;
-	@Column
-	private int eval_support;
-	@Column
-	private int eval_Enseignant;
+	private int salle;
+	
+
+	@Column	private int f_programmesuivi;
+	@Column	private int f_pertinenceprogramme;
+	@Column	private int support;
+	@Column	private int atelier;
+	@Column	private int equilibre;
+	
+	@Column	private int duree; //. 1 trop court a 5 trop long
+
+	@Column	private int EnseignantExpertise;
+	@Column	private int EnseignantPedagogie;
+	@Column	private int EnseignantRelation;
+	@Column	private int Enseignant_relationgroupe;
+
+	@Column	private int satisfaction; // 1 tres insatisfait  4 tres satisfait
+	@Column	private boolean objectifAtteint;
+	@Column	private boolean prerequisCorrect;
+	@Column	private boolean autreProjet;
+	@Column	private boolean demandeContact;
+	@Column	private String comment;
+	
 
 
-
-	 
 	 //constructeur
 		public Evaluation() {
 			super();
@@ -83,30 +103,27 @@ public class Evaluation {
 			this.stagiaire = stagiaire;
 		}
 		
-		public int getEval_accueil() {
-			return eval_accueil;
+		public int getaccueil() {
+			return accueil;
 		}
-		public void setEval_accueil(int eval_accueil) {
-			this.eval_accueil = eval_accueil;
+		public void setaccueil(int accueil) {
+			this.accueil = accueil;
 		}
-		public int getEval_salle() {
-			return eval_salle;
+		public int getsalle() {
+			return salle;
 		}
-		public void setEval_salle(int eval_salle) {
-			this.eval_salle = eval_salle;
+		public void setsalle(int salle) {
+			this.salle = salle;
 		}
-		public int getEval_support() {
-			return eval_support;
+		public int getsupport() {
+			return support;
 		}
-		public void setEval_support(int eval_support) {
-			this.eval_support = eval_support;
+		public void setsupport(int support) {
+			this.support = support;
 		}
-		public int getEval_Enseignant() {
-			return eval_Enseignant;
-		}
-		public void setEval_Enseignant(int eval_Enseignant) {
-			this.eval_Enseignant = eval_Enseignant;
-		}
+
+		
+		
 		@Override
 		public int hashCode() {
 			final int prime = 31;
@@ -136,9 +153,5 @@ public class Evaluation {
 				return false;
 			return true;
 		}
-
-		
-
-
 		
 }

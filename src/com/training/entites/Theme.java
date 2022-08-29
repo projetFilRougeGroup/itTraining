@@ -35,7 +35,7 @@ public class Theme implements Serializable{
 	@JoinColumn(name="idSupertheme")
 	private Theme supertheme;
 
-	@OneToMany(mappedBy="supertheme")
+	@OneToMany(mappedBy="supertheme",cascade={CascadeType.ALL})
 	private Set<Theme> soustheme;// = new HashSet<Employee>();
 
 	@ManyToMany (cascade=CascadeType.PERSIST)
@@ -123,7 +123,9 @@ public class Theme implements Serializable{
 
 	@Override
 	public String toString() {
-		return "Theme [idTheme=" + idTheme + ", nomTheme=" + nomTheme + ", formation=" 	+ formation + ", supertheme=" 	+ supertheme.toString() + "]";
+		return "Theme [idTheme=" + idTheme + ", nomTheme=" + nomTheme + ", supertheme=" + ((supertheme != null) ? supertheme.toString() : "null") + "]";
+		
+		
 	}
 	
 }

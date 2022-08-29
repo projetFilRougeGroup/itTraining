@@ -1,6 +1,7 @@
 package com.training.entites;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Objects;
 import java.util.Set;
 
@@ -161,7 +162,27 @@ public class Stagiaire {
 		  }
 		  return success;
 	    }   
-    
+
+	  public boolean removeSession(Session session) {
+		  boolean success=false;
+		    for (Iterator<Evaluation> iterator = evaluations.iterator();
+		            iterator.hasNext(); ) {
+		       	Evaluation evaluation = iterator.next();
+		        if (evaluation.getSession().equals(session) &&
+		        		evaluation.getStagiaire().equals(this)) {
+	            iterator.remove();
+	            evaluation.getStagiaire().getEvaluations().remove(evaluation);
+	            evaluation.setSession(null);
+	            evaluation.setStagiaire(null);
+	            success=true;
+		  } 
+	    }  	
+		    return success;
+	  }
+
+
+	  
+	  
 	@Override
 	public int hashCode() {
 		return Objects.hash( idStagiaire);

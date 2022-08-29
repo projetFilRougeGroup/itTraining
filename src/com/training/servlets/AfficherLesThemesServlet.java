@@ -44,12 +44,9 @@ public class AfficherLesThemesServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		//String keyWord = request.getParameter("keyWord");
-		//logger.info("Recherche de formation par mot clé : " + keyWord); 
 		ServiceFormation sf = new ServiceFormation();
 		List<Theme> result  = sf.afficherTousLesThemes();
 		logger.info("Themes trouvés: " + result.size());
-//		logger.info("Themes trouvés: " + result.get toString());=> LazyInitializationException: failed to lazily initialize a collection of role: com.training.entites.Theme.formation, 
 		request.setAttribute("resultRechercheThemes", result);
 		
 		RequestDispatcher rd = request.getRequestDispatcher("afficherLesThemes.jsp");

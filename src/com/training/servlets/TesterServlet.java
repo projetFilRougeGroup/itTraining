@@ -3,6 +3,7 @@ package com.training.servlets;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -62,26 +63,69 @@ public class TesterServlet extends HttpServlet {
 				sf.addTheme("Python", 2);
 				sf.addTheme("c--", 2);
 				sf.addTheme("Basic", 2);
-				System.out.println("1.5, suppr theme");			
-				sf.supprimerTheme((long)4L);
-				System.out.println("2, get/set/modif theme");				
-				Theme th_upd = sf.GetTheme((long) 6);
+				
+				// theme maj
+				Theme th_upd = sf.GetTheme((long) 5);
 				th_upd.setNomTheme("C++");
 				sf.modifierTheme(th_upd);
-				//prereq
 				
+				
+				//sf.GetThemebyname("suppr").get(0).toString();
+				
+				// theme suppr, cascade down only (unlink supertheme)
+	
+				sf.supprimerTheme((long)4L);
+
+				sf.addTheme("to suppr");
+				sf.addTheme("to suppr2");
+				
+				List<Theme> lTh_supp0 = sf.rechercheTheme("to suppr2");
+				if (lTh_supp0.size() >0) {
+					for (Theme theme : lTh_supp0) {
+					sf.addTheme("sub to suppr2", theme.getIdTheme());
+					}
+				}
+				if (lTh_supp0.size() >0) {sf.supprimerTheme(lTh_supp0.get(0).getIdTheme());}
+				
+				
+				List<Theme> lTh_supp = sf.rechercheTheme("suppr");
+				if (lTh_supp.size() >0) {
+					for (Theme theme : lTh_supp) {
+					theme.toString();
+					sf.addTheme("subthemeofthemetodelete", lTh_supp.get(0).getIdTheme());
+					sf.supprimerTheme(theme);
+					}
+				}
+				long th_supp=7L;
+				sf.supprimerTheme(th_supp);
+
+				
+				//prereq
+
+	
 
 
 				sf.addPrerequis("dev JAVA", "quizz dev JAVA");
+				sf.addPrerequis("prereq tosuppr ", "no quizz");
+				sf.addPrerequis("dev SQL", "quizz dev SQL");
+				sf.addPrerequis("prereq tosuppr2 ", "no quizz2");
+				sf.addPrerequis("dev SQL avancé", "quizz dev SQL avancé");
+				List<Prerequis> recherchetosuppr = sf.recherchePrerequis("suppr");
+				if (recherchetosuppr.size() >0 && recherchetosuppr != null) {
+					for (Prerequis prereq : recherchetosuppr) {
+					sf.supprimerPrerequis(prereq.getIdPrerequis());
+					}
+				}
 
 				// test find by keyword, show list
 				// test find by id
 				// test delete
 				// test update
-				System.out.println("3");				
+
+				
+				
 				//formation
 				Prerequis prereq = new Prerequis("dev", "quizz dev");
-				//sf.addPrerequis(prereq);
 				Formation formation = new Formation("initiation dev java", "0B301", "dev", "dev java", "details formation 0B301",	"ch1, ch2, ch3", 4995, 5);
 				formation.getFormationPrerequis().add(prereq);
 				
@@ -100,9 +144,10 @@ public class TesterServlet extends HttpServlet {
 				System.out.println("add formation OB301 (composite objects) et OB303");
 				sf.addFormation(formation);
 				Theme st= sf.GetTheme((long) 1);
-				themedev.setSupertheme(st);
-				st.getSoustheme().add(themedev);				
-				sf.modifierTheme(themedev);
+				sf.lierThemes(themedev.getIdTheme(), st.getIdTheme());
+//				themedev.setSupertheme(st);
+//				st.getSoustheme().add(themedev);				
+//				sf.modifierTheme(themedev);
 				
 				sf.addFormation("approfondissement dev java", "0B303", "dev java", "dev java senior", "details formation OB303",	"ch1, ch2, ch3", 9995, 5);
 
@@ -190,9 +235,31 @@ public class TesterServlet extends HttpServlet {
 				long idStag1 = 1;
 				Stagiaire stagToIncrire = sf.getStagiaire(idStag1);
 				Session sessioninscription = sf.getSession(idSession);
-				sf.assignerStagiaire(stagToIncrire.getId(), sessioninscription.getId() );
+				sf.inscrireStagiaire(stagToIncrire.getId(), sessioninscription.getId() );
+	
+
+				List<Stagiaire> lstagToIncrire2 = sf.rechercheStagiaire("maher");
+				if (lstagToIncrire2 != null || lstagToIncrire2.size() >0) {
+					Stagiaire stagToIncrire2= lstagToIncrire2.get(0);
+					Session sessioninscription2 = sf.getSession(3L);
+//					Stagiaire stagToIncrire2 = sf.rechercheStagiaire("maher").get(0);
+//					Session sessioninscription2 = sf.rechercheSession("+").get(0);
+					
+					sf.inscrireStagiaire(stagToIncrire2.getId(), sessioninscription2.getId() );
+					
+					sf.inscrireStagiaire(stagToIncrire2.getId(), 1L);
+					sf.deinscrireStagiaire(stagToIncrire2.getId(), 1L);
+				}
+
+				
+				// evaluation
+
 				
 				//Salle
+				
+				
+				
+				
 
 				Salle salle1 = new Salle("10.15", "adresse centre", "email centre", 20, City.Bordeaux, false, true);
 				

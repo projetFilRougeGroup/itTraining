@@ -20,6 +20,7 @@ import javax.persistence.Table;
 
 import com.training.daos.DAOFormation;
 import com.training.daos.DAOStagiaire;
+import com.training.enums.City;
 
 @Entity
 @Table(name = "Session")
@@ -27,12 +28,14 @@ public class Session {
 
 	@Id@GeneratedValue(strategy=GenerationType.IDENTITY)@Column(name = "ID_SESSION")	
 	private long idSession;
+	private String codeSession;
 	private LocalDate dateDebutSession;
 	private LocalDate dateFinSession; // champs calculé datedébut 
 	private float price;
-//	private int nb_mini;
+
+	//	private int nb_mini;
 	private int nb_max;
-// 	private Lieux lieu_session //(dont distancielle), la session est créée pour un lieu, la résa salle doit suivre
+ 	private City lieu_session; //(dont distancielle), la session est créée pour un lieu, la résa salle doit suivre
 	
 
 	@ManyToOne
@@ -153,7 +156,8 @@ public class Session {
 		  return success;
 	    }	  
 	  
-	    public void removeStagiaire(Stagiaire stagiaire) {
+	    public boolean removeStagiaire(Stagiaire stagiaire) {
+	    	boolean success=false;
 	        for (Iterator<Evaluation> iterator = evaluations.iterator();
 	             iterator.hasNext(); ) {
 	        	Evaluation evaluation = iterator.next();
@@ -164,8 +168,10 @@ public class Session {
 	                evaluation.getStagiaire().getEvaluations().remove(evaluation);
 	                evaluation.setSession(null);
 	                evaluation.setStagiaire(null);
+	                success=true;
 	            }
 	        }
+	        return success;
 	    }	
 	
 		public int getNb_max() {
@@ -174,7 +180,23 @@ public class Session {
 		public void setNb_max(int nb_max) {
 			this.nb_max = nb_max;
 		}	
-	
+
+		public String getCodeSession() {
+			return codeSession;
+		}
+		public void setCodeSession(String codeSession) {
+			this.codeSession = codeSession;
+		}
+		public City getLieu_session() {
+			return lieu_session;
+		}
+		public void setLieu_session(City lieu_session) {
+			this.lieu_session = lieu_session;
+		}
+		public void setEvaluations(Set<Evaluation> evaluations) {
+			this.evaluations = evaluations;
+		}	
+		
 	@Override
 	public int hashCode() {
 		return Objects.hash(idSession);

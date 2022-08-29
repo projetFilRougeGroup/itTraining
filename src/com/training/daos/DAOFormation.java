@@ -353,8 +353,13 @@ public class DAOFormation {
 
 
 	public List<Theme> getTheme(String NomTheme) {
-		// TODO Auto-generated method stub
-		return null;
+		EntityManager em = JpaUtil.getEmf().createEntityManager();
+		NomTheme="'%"+NomTheme+"%'";
+		List<Theme> ltheme = em.createQuery( "SELECT th from Theme th LEFT JOIN FETCH th.soustheme sth LEFT JOIN FETCH th.formation fth where th.nomTheme like ?0", Theme.class)
+				.setParameter(0, NomTheme)
+			    .getResultList();
+		em.close();
+		return ltheme;
 	}
 
 
@@ -381,10 +386,19 @@ public class DAOFormation {
 			tx.begin();
 
 			Theme tSupp = em.find(Theme.class, idTheme);
-			Theme thSuper = em.find(Theme.class, tSupp.getSupertheme().getIdTheme());
-			thSuper.getSoustheme().remove(tSupp);
-			em.merge(thSuper);
-			em.remove(tSupp);
+			if (tSupp != null) {
+				if (tSupp.getSupertheme() != null) {
+					Theme thSuper = em.find(Theme.class, tSupp.getSupertheme().getIdTheme());
+					if (thSuper != null) {
+						thSuper.getSoustheme().remove(tSupp);
+						tSupp.setSupertheme(null);
+						em.merge(thSuper);
+					}
+					
+					em.remove(tSupp);
+				}	
+			}	
+		
 			tx.commit();
 			em.close();
 			success = true;
@@ -399,19 +413,22 @@ public class DAOFormation {
 	
 	public boolean deleteTheme(Theme theme) {
 		boolean success = false;
-
+		EntityManager em = JpaUtil.getEmf().createEntityManager();
+		EntityTransaction tx = em.getTransaction();
+		
 		try {
-			EntityManager em = JpaUtil.getEmf().createEntityManager();
-			EntityTransaction tx = em.getTransaction();
 			tx.begin();
-			em.remove(theme);
-			tx.commit();
-			em.close();
-			success = true;
-
+			Theme themetosupp = em.getReference(Theme.class, theme.getIdTheme());
+			if (themetosupp != null) {
+				em.remove(themetosupp);
+				tx.commit();
+				success = true;
+			}
 		} catch (Exception e) {
+			tx.rollback();
 			logger.error(e);
 		}
+		em.close();
 		return success;
 	}
 	
@@ -481,6 +498,32 @@ public class DAOFormation {
     } finally {
         em.close();
     }
-return success;
-}		
+	return success;
+	}		
+	
+	
+	public boolean unassignStagiaireToSession(long idStagiaire, long idSession )	 {
+		boolean success=false;
+		
+		EntityManager em = JpaUtil.getEmf().createEntityManager();
+		EntityTransaction tx = em.getTransaction();
+		tx.begin();
+	    try {					
+	    Stagiaire stagiaire = em.find(Stagiaire.class, idStagiaire);
+		Session session = em.find(Session.class, idSession);
+		
+        if (stagiaire != null && session != null) {
+        	success = session.removeStagiaire(stagiaire); 
+        	stagiaire.removeSession(session);
+        	em.merge(stagiaire);
+        	em.merge(session);
+        } else {
+        	success=false;
+        }
+        em.getTransaction().commit();
+    } finally {
+        em.close();
+    }
+	return success;
+	}	
 }

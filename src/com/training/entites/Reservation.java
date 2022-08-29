@@ -1,5 +1,6 @@
 package com.training.entites;
 
+import java.time.LocalDate;
 import java.util.Objects;
 
 import javax.persistence.Entity;
@@ -11,13 +12,16 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import com.training.daos.DAOSalle;
+import com.training.daos.DAOSession;
+
 @Entity
-@Table(uniqueConstraints = { @UniqueConstraint(columnNames = { "jourReserve", "idSalle" }) })
+@Table(uniqueConstraints = { @UniqueConstraint(columnNames = { "jourReserve", "idSalle", "idSession" }) })
 public class Reservation {
 
 	@Id@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long idReservation;
-	private String jourReserve;
+	private LocalDate jourReserve;
 	
 	@ManyToOne
 	@JoinColumn(name="idSession")
@@ -30,29 +34,53 @@ public class Reservation {
 	public Reservation() {
 		
 	}
-	public Reservation(long idReservation, String jourReserve) {
+
+	public Reservation(long idSalle,Long idSession, LocalDate jourReserve) {
 		super();
-		this.idReservation = idReservation;
+		DAOSalle ds = new DAOSalle();
+		Salle salle = ds.getSalle(idSalle);
+		DAOSession df = new DAOSession();
+		Session session = df.getSession(idSession);
+		this.salle = salle;
+		this.session = session;
+		session.getReservations().add(this);
+
 		this.jourReserve = jourReserve;
 	}
-	public Reservation(String jourReserve) {
+	public Reservation(Salle salle, Session session, LocalDate jourReserve) {
 		super();
-		this.jourReserve=jourReserve;
+		DAOSalle ds = new DAOSalle();
+		this.salle = salle;
+		this.session=session;
+		this.jourReserve = jourReserve;
 	}
+	
+	
 	public long getIdReservation() {
 		return idReservation;
 	}
 	public void setIdReservation(long idReservation) {
 		this.idReservation = idReservation;
 	}
-	public String getJourReserve() {
+	public LocalDate getJourReserve() {
 		return jourReserve;
 	}
-	public void setJourReserve(String jourReserve) {
+	public void setJourReserve(LocalDate jourReserve) {
 		this.jourReserve = jourReserve;
 	}
-	
-	
+
+	public Session getSession() {
+		return session;
+	}
+	public void setSession(Session session) {
+		this.session = session;
+	}
+	public Salle getSalle() {
+		return salle;
+	}
+	public void setSalle(Salle salle) {
+		this.salle = salle;
+	}
 	
 	@Override
 	public int hashCode() {

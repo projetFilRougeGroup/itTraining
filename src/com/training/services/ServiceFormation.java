@@ -18,6 +18,7 @@ import com.training.daos.DAOStagiaire;
 import com.training.entites.Enseignant;
 import com.training.entites.Formation;
 import com.training.entites.Prerequis;
+import com.training.entites.Reservation;
 import com.training.entites.Salle;
 import com.training.entites.Session;
 import com.training.entites.Stagiaire;
@@ -64,8 +65,8 @@ public class ServiceFormation {
 	
 	public List<Formation> rechercheFormation(String keyWord) {
 		DAOFormation df = new DAOFormation();
-		List<Formation> lForamtion = df.getAllFormation();
-		List<Formation> result = lForamtion.stream().filter(f -> ((f.getNomFormation()).toLowerCase()).contains(keyWord.toLowerCase()) || ((f.getReferenceFormation()).toLowerCase()).contains(keyWord.toLowerCase()) || ((f.getDetailsFormation()).toLowerCase()).contains(keyWord.toLowerCase()) || ((f.getChaptersFormation()).toLowerCase()).contains(keyWord.toLowerCase()) || ((f.getObjectifsFormation()).toLowerCase()).contains(keyWord.toLowerCase()) || ((f.getPublicFormation()).toLowerCase()).contains(keyWord.toLowerCase())).collect(Collectors.toList());
+		List<Formation> lFormation = df.getAllFormation();
+		List<Formation> result = lFormation.stream().filter(f -> ((f.getNomFormation()).toLowerCase()).contains(keyWord.toLowerCase()) || ((f.getReferenceFormation()).toLowerCase()).contains(keyWord.toLowerCase()) || ((f.getDetailsFormation()).toLowerCase()).contains(keyWord.toLowerCase()) || ((f.getChaptersFormation()).toLowerCase()).contains(keyWord.toLowerCase()) || ((f.getObjectifsFormation()).toLowerCase()).contains(keyWord.toLowerCase()) || ((f.getPublicFormation()).toLowerCase()).contains(keyWord.toLowerCase())).collect(Collectors.toList());
 		// check reference
 		logger.debug("Nombre de formation trouvé avec le mot clé " + keyWord + " : " + result.size());
 		return result;
@@ -147,6 +148,16 @@ public class ServiceFormation {
 		logger.debug(lPrerequis);
 		return lPrerequis;
 	}
+	
+	public List<Prerequis> recherchePrerequis(String keyWord) {
+		DAOPrerequis dp = new DAOPrerequis();
+		List<Prerequis> lPrerequis=dp.getAllPrerequis();
+		List<Prerequis> result = lPrerequis.stream().filter(f -> ((f.getDescriptionPrerequis()).toLowerCase()).contains(keyWord.toLowerCase()) || ((f.getQuizz()).toLowerCase()).contains(keyWord.toLowerCase())).collect(Collectors.toList()); 
+
+		logger.debug("Nombre de Prerequis trouvés avec le mot clé " + keyWord + " : " + result.size());
+		return result;
+	}
+	
 	public Prerequis GetPrerequis( Long IdPrerequis){
 		DAOPrerequis dp = new DAOPrerequis();
 		Prerequis prerequis=dp.getPrerequis(IdPrerequis);
@@ -190,10 +201,12 @@ public class ServiceFormation {
 	
 	public List<Theme> rechercheTheme(String keyWord) {
 		DAOFormation df = new DAOFormation();
+
 		List<Theme> lTheme = df.getAllTheme();
-		//List<Theme> result = lTheme.stream().filter(f -> f.getNomTheme().contains(keyWord) || f.getReferenceTheme().contains(keyWord) || f.getDetailsTheme().contains(keyWord) || f.getChaptersTheme().contains(keyWord) || f.getDomaineTheme().contains(keyWord) || f.getObjectifsTheme().contains(keyWord) || f.getPrerequisTheme().getDescriptionPrerequis().contains(keyWord) || f.getPublicTheme().contains(keyWord)).collect(Collectors.toList());
-		logger.info("Nombre de Theme trouvé avec le mot clé " + keyWord + " : " + lTheme.size());
-		return lTheme;
+		List<Theme> result = lTheme.stream().filter(f -> ((f.getNomTheme()).toLowerCase()).contains(keyWord.toLowerCase())).collect(Collectors.toList());
+
+		logger.info("Nombre de Theme trouvé avec le mot clé " + keyWord + " : " + result.size());
+		return result;
 		
 	}
 	
@@ -210,7 +223,12 @@ public class ServiceFormation {
 
 		return theme;
 	}	
-	
+	public List<Theme> GetThemebyname( String nomTheme){
+		DAOFormation df = new DAOFormation();
+		List<Theme> ltheme=df.getTheme(nomTheme);
+
+		return ltheme;
+	}		
 	public void modifierTheme(Theme theme) // version avec param
 	{
 		
@@ -225,6 +243,14 @@ public class ServiceFormation {
 		df.deleteTheme(idTheme);
 		logger.info("le Theme à été supprimé");
 	}
+	
+	public void supprimerTheme(Theme theme)
+	{
+		DAOFormation df = new DAOFormation();
+		df.deleteTheme(theme);
+		logger.info("le Theme à été supprimé");
+	}
+	
 	public void lierThemes(long idTheme, long idThemesuper)
 	{
 		DAOFormation df = new DAOFormation();
@@ -390,9 +416,10 @@ public class ServiceFormation {
 		List<Session> result = lSession.stream().filter(f -> 
 				((f.getDateDebutSession()).toString().toLowerCase()).contains(keyWord.toLowerCase()) ||
 				((f.getDateFinSession()).toString().toLowerCase()).contains(keyWord.toLowerCase()) ||
-				((String.valueOf(f.getPrice())).toLowerCase()).contains(keyWord.toLowerCase()) ||
-				((f.getEnseignant().getNomEnseignant()).toLowerCase()).contains(keyWord.toLowerCase()) ||
-				((f.getEnseignant().getPrenomEnseignant()).toLowerCase()).contains(keyWord.toLowerCase()) 
+				((String.valueOf(f.getPrice())).toLowerCase()).contains(keyWord.toLowerCase())
+//				||
+//				((f.getEnseignant().getNomEnseignant()).toLowerCase()).contains(keyWord.toLowerCase()) ||
+//				((f.getEnseignant().getPrenomEnseignant()).toLowerCase()).contains(keyWord.toLowerCase()) 
 				).collect(Collectors.toList());
 		logger.debug("Nombre de formation trouvé avec le mot clé " + keyWord + " : " + result.size());
 		return result;
@@ -501,6 +528,86 @@ public class ServiceFormation {
 	}
 	
 	
+	// Reservations
+	public void addReservation(Reservation Reservation) 
+	{
+		DAOSalle ds = new DAOSalle();
+		 ds.addReservation(Reservation);
+		logger.info("Ajout d'une Reservation pour une formation!");
+
+	}
+	public void addReservation(long IdSalle, long IdSession, LocalDate dateRes ) 
+	{
+		DAOSalle ds = new DAOSalle();
+		Reservation Reservation = new Reservation(IdSalle,IdSession,dateRes );
+		ds.addReservation(Reservation);
+		logger.info("Ajout d'une Reservation pour une formation!");
+
+	}	
+	public Reservation afficherUneReservation(Long idReservation){
+		DAOSalle ds = new DAOSalle();
+		Reservation Reservation=ds.getReservation(idReservation);
+		logger.info(Reservation);
+		return Reservation;
+	}	
+	
+	public List<Reservation> AfficherLesReservations() {
+		DAOSalle ds = new DAOSalle();
+		List<Reservation> lReservation = ds.getAllReservations();
+		return lReservation;
+	}	
+
+	public List<Reservation> rechercheReservation(String keyWord) {
+		DAOSalle ds = new DAOSalle();
+		List<Reservation> lReservation = ds.getAllReservations();
+//nombreDePlaces ReservationEquipeeOrdi, ReservationEquipeeProjecteur champs non parcourus
+				List<Reservation> result = lReservation.stream().filter(f -> 
+				((f.getSalle().getCodeSalle().toLowerCase())).contains(keyWord.toLowerCase()) ||
+				((f.getSession().getCodeSession().toLowerCase())).contains(keyWord.toLowerCase()) ||
+				((f.getSession().getLieu_session().nameLowerCase())).contains(keyWord.toLowerCase()) ||
+				((f.getSalle().getCity().nameLowerCase())).contains(keyWord.toLowerCase())
+				).collect(Collectors.toList());
+				
+		logger.debug("Nombre de Reservations trouvées avec le mot clé " + keyWord + " : " + result.size());
+		return result;
+	}
+
+	public Reservation getReservation(long idReservation) {
+		DAOSalle ds = new DAOSalle();
+		Reservation Reservation = ds.getReservation(idReservation);
+		return Reservation;
+	}	
+	
+	public void modifierReservation(Reservation Reservation)
+	{
+		
+		DAOSalle ds = new DAOSalle();
+		ds.modifierReservation(Reservation);
+		logger.info("la Reservation à été modifiée");
+	}
+	public void modifierReservation(long idReservation,Salle salle, Session session, LocalDate JourReserve) { 
+
+		
+		DAOSalle ds = new DAOSalle();
+		ds.modifierReservation(idReservation, salle, session,  JourReserve);
+
+		logger.info("la Reservation à été modifiée");
+	}	
+
+	public void supprimerReservation(long idReservation)
+	{
+		DAOSalle ds = new DAOSalle();
+		ds.deleteReservation(idReservation);
+		logger.info("le Reservation à été supprimée");
+	}
+	
+	public void supprimerReservation(Reservation Reservation)
+	{
+		DAOSalle ds = new DAOSalle();
+		ds.deleteReservation(Reservation);
+		logger.info("le Reservation à été supprimée");
+	}
+	
 	
 	
 	
@@ -519,7 +626,9 @@ public class ServiceFormation {
 		return success;
 	}
 
-	public boolean assignerStagiaire (long idStagiaire,long idSession) {
+	
+	
+	public boolean inscrireStagiaire (long idStagiaire,long idSession) {
 		
 		boolean success = false;
 		DAOFormation df = new DAOFormation();
@@ -528,6 +637,19 @@ public class ServiceFormation {
 		// check session existe 
 		success = df.assignStagiaireToSession(idStagiaire,idSession);
 		logger.info("Enseignant" + idStagiaire + "assigné a session " + idSession);
+		
+		return success;
+	}	
+	
+	public boolean deinscrireStagiaire (long idStagiaire,long idSession) {
+		
+		boolean success = false;
+		DAOFormation df = new DAOFormation();
+		
+		// check enseignant existe, 
+		// check session existe 
+		success = df.unassignStagiaireToSession(idStagiaire,idSession);
+		logger.info("Enseignant" + idStagiaire + "désassigné de session " + idSession);
 		
 		return success;
 	}	

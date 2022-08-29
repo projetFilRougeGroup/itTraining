@@ -46,7 +46,7 @@
 		            <tr>
 			            <td>${workload.idSession}</td>
 			            <td>${workload.dateDebutSession}</td>
-			            <td>${workload.dateDebutSession}</td>
+			            <td>${workload.dateFinSession}</td>
 						<td>${workload.priceSession}</td>	           
 						
 			            <td>${workload.IdFormation}</td>

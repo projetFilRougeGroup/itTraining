@@ -6,7 +6,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 
-
+import com.training.entites.Reservation;
 import com.training.entites.Salle;
 import com.training.entites.Session;
 import com.training.entites.Theme;
@@ -126,7 +126,7 @@ public class DAOSalle {
 		EntityTransaction tx = em.getTransaction();
 		tx.begin();
 		
-		Salle salletosuppr =em.find(Salle.class, salle.getIdSalle());
+		Salle salletosuppr =em.getReference(Salle.class, salle.getIdSalle());
 		if (salletosuppr != null) {
 			em.remove(salletosuppr);
 			success=true;
@@ -220,5 +220,122 @@ public class DAOSalle {
 		
 			return idsession;
 			}	
+		
+		public List<Reservation> getAllReservations() {
+			EntityManager em = JpaUtil.getEmf().createEntityManager();
+			EntityTransaction tx = em.getTransaction();
+
+			em.createNativeQuery("");
+			List<Reservation> Reservations = em.createQuery(
+				    "SELECT e FROM Reservation e")
+				    .getResultList();
+
+			em.close();
+			return Reservations;
+		}
+		
+		public Reservation getReservation(long idReservation) {
+			EntityManager em = JpaUtil.getEmf().createEntityManager();
+			EntityTransaction tx = em.getTransaction();
+
+			Reservation Reservation = em.find(Reservation.class, idReservation);
+
+			em.close();
+			return Reservation;
+		}
+		
+		public void addReservation(long idSalle,Long idSession, LocalDate jourReserve) {
+			EntityManager em = JpaUtil.getEmf().createEntityManager();
+			EntityTransaction tx = em.getTransaction();
+			tx.begin();
+			
+			Reservation es = new Reservation( idSalle, idSession,  jourReserve);
+			
+			em.persist(es);
+			tx.commit();
+			em.close();
+			
+		}
+		
+		public void addReservation(Reservation Reservation) {
+			EntityManager em = JpaUtil.getEmf().createEntityManager();
+			EntityTransaction tx = em.getTransaction();
+			tx.begin();
+			
+			
+			em.persist(Reservation);
+			
+			tx.commit();
+			em.close();
+			
+		}
+
+		public void modifierReservation(long idReservation,Salle salle, Session session, LocalDate JourReserve) {
+			
+			EntityManager em = JpaUtil.getEmf().createEntityManager();
+			EntityTransaction tx = em.getTransaction();
+			tx.begin();
+
+			Reservation es = em.createQuery("SELECT e FROM Reservation e where e.idReservation = ?0", Reservation.class)
+					.setParameter(0, idReservation)
+				    .getSingleResult();
+
+			es.setSalle(salle);
+			es.setSession(session);
+			es.setJourReserve(JourReserve);
+			
+			em.merge(es);
+			
+			tx.commit();
+			em.close();	
+		}
+		
+		public void modifierReservation(Reservation Reservation) {
+			
+			EntityManager em = JpaUtil.getEmf().createEntityManager();
+			EntityTransaction tx = em.getTransaction();
+			tx.begin();
+
+			em.merge(Reservation);
+			
+			tx.commit();
+			em.close();	
+		}
+		
+		public void deleteReservation(long idReservation) {
+		
+			EntityManager em = JpaUtil.getEmf().createEntityManager();
+			EntityTransaction tx = em.getTransaction();
+			tx.begin();
+
+			Reservation toSupp = em.find(Reservation.class, idReservation);
+			if ( toSupp != null) {
+						em.remove(toSupp);
+						
+					}
+			
+			tx.commit();
+			em.close();
+			
+		}
+		
+		public boolean deleteReservation(Reservation Reservation) {
+			boolean success = false;
+			EntityManager em = JpaUtil.getEmf().createEntityManager();
+			EntityTransaction tx = em.getTransaction();
+			tx.begin();
+			
+			Reservation Reservationtosuppr =em.getReference(Reservation.class, Reservation.getIdReservation());
+			if (Reservationtosuppr != null) {
+				em.remove(Reservationtosuppr);
+				success=true;
+			}
+
+			tx.commit();
+			em.close();
+			
+			return success;
+		}
+		
 		
 }
